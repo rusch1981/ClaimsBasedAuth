@@ -5,3 +5,6 @@
 /.vs
 /Authentication/bin/Debug
 /Authentication/obj
+/WebApplicationAuthentication/bin
+/WebApplicationAuthentication/obj
+/WebApplicationAuthentication/App_Data
