@@ -3,7 +3,8 @@ using System.Security.Claims;
 
 namespace Authentication
 {
-    //In order for this work you need to register your custom claims Manager (Authorizer) in app.config. 
+    //In order for this work via the ClaimsPrincipalPermission Attribute you need to register 
+    //  your CustomAuthorizationManager (Authorizer) in the app.config. 
     //The basic idea is that actions and resources can be passed in via context
     // and used to specify the flow of authorization to complete those actions.  
     //Reference System.Security.Claims.dll
@@ -19,6 +20,7 @@ namespace Authentication
             //  are claims and have a value of Show and Code consecutively.
             //This context will include information about the user who’s trying to access the method. 
             //  The ‘Principal’ property will describe the current User.
+            //Note:  if this method is called via the ClaimsPrincipalPermission Attribute a false return will trigger a Security exception.
             string resource = context.Resource.First().Value;
             string action = context.Action.First().Value;
 
@@ -29,14 +31,12 @@ namespace Authentication
                 return registered;
             }
 
-            if (action == "Show2" && resource == "Code")
+            if (action == "Blah" && resource == "Code")
             {
                 bool registered = context.Principal.HasClaim("Registered", "True");
-                //  if a false is returned then a Security Exception will be thrown
                 return registered;
             }
 
-            // if you hit this line a Security Exception will be thrown.  
             return false;
         }
     }

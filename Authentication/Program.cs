@@ -66,6 +66,10 @@ namespace Authentication
             {
                 Console.WriteLine("User Registered to ShowMeTheCode2");
             }
+            else
+            {
+                Console.WriteLine("User Not Registered to ShowMeTheCode2");
+            }
         }
 
         private static void UseCurrentPrincipal()
