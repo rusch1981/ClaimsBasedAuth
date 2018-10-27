@@ -2,12 +2,12 @@
 The below examples are from the turorials listed below.  For detailed info refer to Microsoft 
 Documentation 
 [here](https://docs.microsoft.com/en-us/dotnet/framework/security/)
-## Authentication Project
+### Authentication Project
 Claims Based Security .Net4.5.  The majority of the code is from 
 [here](https://dotnetcodr.com/2013/02/14/introduction-to-claims-based-security-in-net4-5-with-c-part-2-the-new-inheritance-model/) 
 tutorial.  The tutorial covers Claims, ClaimsIdentities, inhertance, Custom ClaimsAuthorizationManager
  and ClaimsPrincipalPermission Attribute, Custom ClaimsAuthenticationManager and much more.
-## Mvc5Auth Project
+### Mvc5Auth Project
 Thee definitions below are from 
 [here](https://software-security.sans.org/blog/2015/06/24/asp-net-mvc-using-identity-for-authentication-authorization)
 and
@@ -36,7 +36,7 @@ for performing registration and authentication.
 
 
 
-## WebApplicationAuthentication Project
+### WebApplicationAuthentication Project
 THIS PROJECT IS ABANDONED -  APPEARS TO BE OUTDATED
 
 Claims Based Security .Net4.5.  The majority of the code here is from 
@@ -51,5 +51,17 @@ See the below classes for specific details:
 [here](https://dotnetcodr.com/2013/02/28/claims-based-authentication-in-mvc4-with-net4-5-c-part-2-storing-authentication-data-in-an-authentication-session/)
 at AccountController
 
+## IdentityServer
 
+### IdentityServer4
+
+See [README.md](QuickstartidentityServer/README.md)
+
+### MvcClientCore
+
+See [README.md](MvcClient/README.md)
+
+### MvcClient (Full Framework)
+
+See [README.md](MVC-Authentication/EmbeddedMvc/README.md)
 

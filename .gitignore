@@ -16,3 +16,13 @@
 /packages/Microsoft.AspNet.WebPages.WebData.2.0.20710.0
 /packages/WebMatrix.WebData.2.0.30506.0
 /MVC5WinAuth
+/MVC Authentication/.vs
+/MVC Authentication/Api/bin
+/MVC Authentication/Api/obj
+/MvcClient/bin/Debug/netcoreapp2.0
+/MvcClient/obj
+/QuickstartIdentityServer/bin/Debug/netcoreapp2.0
+/QuickstartIdentityServer/obj
+/MVC Authentication/EmbeddedMvc/IdentityServer
+/MVC Authentication/EmbeddedMvc/obj
+/MVC Authentication/EmbeddedMvc/bin
