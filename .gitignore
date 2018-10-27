@@ -8,3 +8,11 @@
 /WebApplicationAuthentication/bin
 /WebApplicationAuthentication/obj
 /WebApplicationAuthentication/App_Data
+/Mvc5Auth/bin
+/Mvc5Auth/obj
+/MVC5WinAuth/bin
+/MVC5WinAuth/obj/Debug
+/packages/Microsoft.AspNet.WebPages.Data.2.0.20710.0
+/packages/Microsoft.AspNet.WebPages.WebData.2.0.20710.0
+/packages/WebMatrix.WebData.2.0.30506.0
+/MVC5WinAuth

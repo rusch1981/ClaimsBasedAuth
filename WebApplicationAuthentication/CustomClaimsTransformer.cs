@@ -13,7 +13,7 @@ namespace WebApplicationAuthentication
     {
         //Go to commented out section of the global.asax (Application_PostAuthenticateRequest) to see how the auto magic happens.  We are using caching 
         // so we don't call this method from Application_PostAuthenticateRequest any longer.  
-        //For cahcing go to :  AccountController POST Login() method
+        //For caching go to :  AccountController POST Login() method
         public override ClaimsPrincipal Authenticate(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
             //If the user is anonymous then we let the base class handle the call. The Authenticate method 
@@ -27,14 +27,15 @@ namespace WebApplicationAuthentication
             //do something if authenticated like query a database for more claims.
             ClaimsPrincipal transformedPrincipal = DressUpPrincipal(incomingPrincipal.Identity.Name);
 
-            //Cache the session - See Web.config to for configuration
+            //Cache the session - See Web.config to for configuration.  If using Application_PostAuthenticateRequest
+            //  this line should be removed.
             CreateSession(transformedPrincipal);
 
             return transformedPrincipal;
         }
 
 
-        //We create a SessionSecurityToken object and pass in the transformed principal and an expiration. 
+        //Caching - We create a SessionSecurityToken object and pass in the transformed principal and an expiration. 
         //  By default the auth session mechanism works with absolute expiration, we’ll see later how to implement sliding 
         //  expiration. Then we write that token to a cookie. From this point on we don’t need to run the transformation 
         //  logic any longer.

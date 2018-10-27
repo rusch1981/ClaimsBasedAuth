@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationAuthentication", "WebApplicationAuthentication\WebApplicationAuthentication.csproj", "{0D173F3A-51CF-4C08-8712-6898E25AF748}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc5Auth", "Mvc5Auth\Mvc5Auth.csproj", "{45D019ED-3821-4755-A9FB-380599DA0091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC5WinAuth", "MVC5WinAuth\MVC5WinAuth.csproj", "{CDA86795-0453-4C96-86BF-ADB84DE819DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{0D173F3A-51CF-4C08-8712-6898E25AF748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D173F3A-51CF-4C08-8712-6898E25AF748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D173F3A-51CF-4C08-8712-6898E25AF748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45D019ED-3821-4755-A9FB-380599DA0091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45D019ED-3821-4755-A9FB-380599DA0091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45D019ED-3821-4755-A9FB-380599DA0091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45D019ED-3821-4755-A9FB-380599DA0091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDA86795-0453-4C96-86BF-ADB84DE819DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA86795-0453-4C96-86BF-ADB84DE819DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDA86795-0453-4C96-86BF-ADB84DE819DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDA86795-0453-4C96-86BF-ADB84DE819DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
