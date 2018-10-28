@@ -26,3 +26,7 @@
 /MVC Authentication/EmbeddedMvc/IdentityServer
 /MVC Authentication/EmbeddedMvc/obj
 /MVC Authentication/EmbeddedMvc/bin
+/CoreMvcClient/.vs/CoreMvcClient
+/CoreMvcClient/CoreMvcClient/bin/Debug/netcoreapp2.1
+/CoreMvcClient/CoreMvcClient/obj
+/MvcClient/.vs
