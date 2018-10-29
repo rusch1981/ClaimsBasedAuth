@@ -1,3 +1,0 @@
-C:\Repositories\MVCClient\MVCClient\obj\Debug\MVCClient.csproj.App.config
-C:\Repositories\MVCClient\MVCClient\obj\Debug\MVCClient.csprojAssemblyReference.cache
-C:\Repositories\MVCClient\MVCClient\obj\Debug\MVCClient.csproj.CoreCompileInputs.cache
