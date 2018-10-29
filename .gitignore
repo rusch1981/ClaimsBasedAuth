@@ -30,3 +30,5 @@
 /CoreMvcClient/CoreMvcClient/bin/Debug/netcoreapp2.1
 /CoreMvcClient/CoreMvcClient/obj
 /MvcClient/.vs
+/MvcClient/MvcClient/bin
+/MvcClient/MvcClient/obj/Debug
