@@ -33,15 +33,5 @@ for performing registration and authentication.
 
 ## IdentityServer
 
-### IdentityServer4
 
-See [README.md](QuickstartidentityServer/README.md)
-
-### MvcClientCore
-
-See [README.md](MvcClient/README.md)
-
-### MvcClient (Full Framework)
-
-See [README.md](MVC-Authentication/EmbeddedMvc/README.md)
 
