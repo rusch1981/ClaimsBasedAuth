@@ -50,5 +50,6 @@ dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c Config
 
 Create MVC Client from Quickstart.  
 
-[Claims Trouble Shooting](https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/)
+[ClaimsTroubleShooting 2.0](https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/)
+and [ClaimsTroubleShooting 2.1](https://leastprivilege.com/2018/06/14/improvements-in-claim-mapping-in-the-asp-net-core-2-1-openid-connect-handler/)
 https://github.com/IdentityServer/IdentityServer4/issues/2213
