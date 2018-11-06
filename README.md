@@ -33,5 +33,19 @@ for performing registration and authentication.
 
 ## IdentityServer
 
+Install IdentityServer4, IdentityServer4.EntityFramework, and Microsoft.EntityFrameworkCore.Tools.DotNet.
 
+Run below to test.  
+```cmd
+dotnet ef 
+```
 
+Bring in [Quickstart 8 Scaffolding](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage)
+
+Run the migration Commands from the project directory
+```cmd
+dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+```
+
+Create MVC Client from Quickstart.  
