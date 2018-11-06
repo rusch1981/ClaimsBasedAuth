@@ -31,26 +31,6 @@ ApplicationUser class can be extended with new fields can be found here.
 for performing registration and authentication. 
 
 
-
-
-
-
-
-### WebApplicationAuthentication Project
-THIS PROJECT IS ABANDONED -  APPEARS TO BE OUTDATED
-
-Claims Based Security .Net4.5.  The majority of the code here is from 
-[here](https://dotnetcodr.com/2013/02/25/claims-based-authentication-in-mvc4-with-net4-5-c-part-1-claims-transformation/) 
-tutorial.  The tutorial covers Custom ClaimsAuthenticationManager, User Retrieval in Razor, and Caching,
-
-See the below classes for specific details: 
- * CustomClaimsTransformer.cs 
- * _LoginPartial.cshtml (User Retrieval in Razor)
- * Web.config and CustomClaimsTransformer (page post automagic)
- * AccountController and CustomClaimsTransformer (Caching user session)  stopped 
-[here](https://dotnetcodr.com/2013/02/28/claims-based-authentication-in-mvc4-with-net4-5-c-part-2-storing-authentication-data-in-an-authentication-session/)
-at AccountController
-
 ## IdentityServer
 
 ### IdentityServer4
