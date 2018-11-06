@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,28 @@ namespace MVC_Client
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
+
+                    //this must be cleared -see trouble shooting link in readme
+                    options.Scope.Clear();
+                    options.Scope.Add("openid");
+                    //must be removed if you want these openid claims -see trouble shooting link in readme
+                    options.ClaimActions.Remove("nonce");
+                    options.ClaimActions.Remove("aud");
+                    options.ClaimActions.Remove("azp");
+                    options.ClaimActions.Remove("acr");
+                    options.ClaimActions.Remove("amr");
+                    options.ClaimActions.Remove("iss");
+                    options.ClaimActions.Remove("iat");
+                    options.ClaimActions.Remove("nbf");
+                    options.ClaimActions.Remove("exp");
+                    options.ClaimActions.Remove("at_hash");
+                    options.ClaimActions.Remove("c_hash");
+                    options.ClaimActions.Remove("ipaddr");
+                    options.ClaimActions.Remove("auth_time");
+                    options.ClaimActions.Remove("platf");
+                    options.ClaimActions.Remove("ver");
+
+                    options.ClaimActions.MapUniqueJsonKey("profile", "profile");
 
                     options.Scope.Add("api1");
                     options.Scope.Add("offline_access");

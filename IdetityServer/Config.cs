@@ -10,10 +10,16 @@ namespace IdetityServer
     {// scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
+            var customProfile = new IdentityResource(
+                name: "custom.profile",
+                displayName: "Custom profile",
+                claimTypes: new[] { "name", "email", "NickName" });
+
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                customProfile
             };
         }
 
@@ -75,6 +81,7 @@ namespace IdetityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        "custom.profile",
                         "api1"
                     },
                     AllowOfflineAccess = true

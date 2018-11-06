@@ -16,6 +16,8 @@ namespace IdentityServer.Quickstart.UI
             new TestUser{SubjectId = "818727", Username = "alice", Password = "alice", 
                 Claims = 
                 {
+                    new Claim("name", "AsSmith"),
+                    new Claim(JwtClaimTypes.Profile, "profile"),
                     new Claim(JwtClaimTypes.Name, "Alice Smith"),
                     new Claim(JwtClaimTypes.GivenName, "Alice"),
                     new Claim(JwtClaimTypes.FamilyName, "Smith"),

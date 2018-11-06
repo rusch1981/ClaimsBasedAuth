@@ -1,4 +1,10 @@
-C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.csprojAssemblyReference.cache
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.deps.json
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.runtimeconfig.json
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.runtimeconfig.dev.json
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.dll
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.pdb
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.Views.dll
+C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.Views.pdb
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.csproj.CoreCompileInputs.cache
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.RazorAssemblyInfo.cache
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.RazorAssemblyInfo.cs
@@ -22,14 +28,7 @@ C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\Razor\View
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.g.cshtml.cs
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.RazorTargetAssemblyInfo.cache
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.RazorTargetAssemblyInfo.cs
+C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.Views.pdb
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.dll
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.pdb
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.deps.json
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.runtimeconfig.json
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.runtimeconfig.dev.json
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.dll
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.pdb
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.Views.dll
-C:\Repositories\ClaimsBasedAuth\IdetityServer\bin\Debug\netcoreapp2.1\IdetityServer.Views.pdb
-C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.Views.pdb
 C:\Repositories\ClaimsBasedAuth\IdetityServer\obj\Debug\netcoreapp2.1\IdetityServer.csproj.CopyComplete
