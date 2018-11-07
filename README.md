@@ -52,6 +52,12 @@ Run the migration Commands from the project directory
 dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
 ```
+
+Set up user tables and migrate EF data model to project.
+```cmd
+Scaffold-DbContext "Data Source=localhost;database=IdentityServer4;trusted_connection=yes;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+```
+
 ##### Users and UserStore
 IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  
 The implementation CustomUserStore.cs uses Active Directory.  In order for of CustomUserStore.cs to 

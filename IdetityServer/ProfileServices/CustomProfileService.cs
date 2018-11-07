@@ -1,11 +1,13 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
+using IdetityServer.Models;
 using IdetityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IdetityServer.ProfileServices
@@ -16,7 +18,8 @@ namespace IdetityServer.ProfileServices
         /// The logger
         /// </summary>
         protected readonly ILogger Logger;
-        private IUserStore UserStore; 
+        private IUserStore UserStore;
+        private IdentityServerContext _DataContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
@@ -26,6 +29,7 @@ namespace IdetityServer.ProfileServices
         {
             Logger = logger;
             UserStore = userStore;
+            _DataContext = new IdentityServerContext();
         }
 
         /// <summary>
@@ -39,22 +43,31 @@ namespace IdetityServer.ProfileServices
             //  do not remove.  This is need to populate all tokens with the subject claim
             context.AddRequestedClaims(context.Subject.Claims);
 
-            IEnumerable<string> requestTypes = context.RequestedClaimTypes;
-            List<Claim> claims = new List<Claim>();
+            var aD_User = UserStore.FindBySubjectId(context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value);
+            int dB_UserId = _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username).Id;
+            int dB_ClientId = _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId).Id;            
+            List<Claim> issuedClaims = new List<Claim>();     
+            StringBuilder allRoles = new StringBuilder("");
 
-            
-            string subId = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value;
-            var adUser = UserStore.FindBySubjectId(subId);
 
-            // retrieve user related Claims
-            ICollection<Claim> allClaims = UserStore.FindBySubjectId(subId).Claims;
-            List<Claim> issuedClaims = new List<Claim>();
+            foreach (var userClientRoles in _DataContext.UsersClientsRoles.Where(x => x.UserId == dB_UserId && x.ClientId == dB_ClientId && x.UserRoleId != 0))
+            {
+                string role = _DataContext.UsersRoles.FirstOrDefault(x => x.Id == userClientRoles.UserRoleId).Role;
 
-            if (requestTypes.Any())
+                allRoles.Append(" " + role);
+            }
+
+            List<Claim> allClaims = new List<Claim>
+            {
+                new Claim("name", aD_User.Username),
+                new Claim("role", allRoles.ToString())
+            };
+
+            if (context.RequestedClaimTypes.Any())
             {
                 foreach (var claim in allClaims)
                 {
-                    if (requestTypes.Any(x => x.Equals(claim.Type, StringComparison.InvariantCultureIgnoreCase)))
+                    if (context.RequestedClaimTypes.Any(x => x.Equals(claim.Type, StringComparison.InvariantCultureIgnoreCase)))
                     {
                         issuedClaims.Add(claim);
                     }
