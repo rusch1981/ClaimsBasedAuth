@@ -1,17 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authentication;
+@using System.IdentityModel.Tokens.Jwt;
 @{
     ViewData["Title"] = "Secure";
 }
 <h2>@ViewData["Title"]</h2>
 
-<h3>User claims</h3>
-
-<div>
-    <a asp-action="CallApiUsingUserAccessToken">Call API using user token</a>
-</div>
-<div>
-    <a asp-action="CallApiUsingClientCredentials">Call API using application identity</a>
-</div>
+<h3>User claims </h3>
 
 <dl>
     @foreach (var claim in User.Claims)
@@ -20,8 +14,21 @@
         <dd>@claim.Value</dd>
 
     }
+</dl>
+<br />
+<h3>Access Token Claims</h3>
+<dl>
+    @{ 
+        string encodedToken = await ViewContext.HttpContext.GetTokenAsync("access_token");
+        JwtSecurityToken jwtToken = new JwtSecurityToken(encodedToken);
+    }
+    @foreach (var claim in jwtToken.Claims)
+    {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
     <dt>access token</dt>
-    <dd>@await ViewContext.HttpContext.GetTokenAsync("access_token")</dd>
+    <dd>@encodedToken</dd>
 
     <dt>refresh token</dt>
     <dd>@await ViewContext.HttpContext.GetTokenAsync("refresh_token")</dd>

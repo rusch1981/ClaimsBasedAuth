@@ -26,40 +26,36 @@ namespace MVC_Client
                 {
                     options.SignInScheme = "Cookies";
 
+                    //identity server uri reference
                     options.Authority = "http://localhost:5000";
+                    // in production configure to HTTP
                     options.RequireHttpsMetadata = false;
 
+                    //Client specific information 
                     options.ClientId = "mvc";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
 
+                    //Must clear spoce to remove proprietary mappings
+                    options.Scope.Clear();
+
+                    //add scopes to request.  openid must be requested.
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.Scope.Add("customProfile1");
+                    options.Scope.Add("customProfile2");
+
+                    //Map of specific claims.  Only a few are mapped automatically.  Map all that you need to be sure.
+                    options.ClaimActions.MapUniqueJsonKey("sub", "sub");
+                    options.ClaimActions.MapUniqueJsonKey("name", "name");
+                    options.ClaimActions.MapUniqueJsonKey("foo", "foo");
+                    options.ClaimActions.MapUniqueJsonKey("website", "website");
+                    options.ClaimActions.MapUniqueJsonKey("role", "role");
+
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
 
-                    //this must be cleared -see trouble shooting link in readme
-                    options.Scope.Clear();
-                    options.Scope.Add("openid");
-                    //must be removed if you want these openid claims -see trouble shooting link in readme
-                    options.ClaimActions.Remove("nonce");
-                    options.ClaimActions.Remove("aud");
-                    options.ClaimActions.Remove("azp");
-                    options.ClaimActions.Remove("acr");
-                    options.ClaimActions.Remove("amr");
-                    options.ClaimActions.Remove("iss");
-                    options.ClaimActions.Remove("iat");
-                    options.ClaimActions.Remove("nbf");
-                    options.ClaimActions.Remove("exp");
-                    options.ClaimActions.Remove("at_hash");
-                    options.ClaimActions.Remove("c_hash");
-                    options.ClaimActions.Remove("ipaddr");
-                    options.ClaimActions.Remove("auth_time");
-                    options.ClaimActions.Remove("platf");
-                    options.ClaimActions.Remove("ver");
-
-                    options.ClaimActions.MapUniqueJsonKey("profile", "profile");
-
-                    options.Scope.Add("api1");
-                    options.Scope.Add("offline_access");
+                    //options.ClaimActions.MapAllExcept("iss", "nbf", "exp", "aud", "nonce", "iat", "c_hash");
                 });
         }
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using IdentityModel.Client;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MVC_Client.Controllers
 {
@@ -19,6 +20,9 @@ namespace MVC_Client.Controllers
         public IActionResult Secure()
         {
             ViewData["Message"] = "Secure page.";
+
+            // example of how to retrieve token at controller level.  
+            var jwtToken = new JwtSecurityToken(HttpContext.GetTokenAsync("access_token").GetAwaiter().GetResult()); 
 
             return View();
         }

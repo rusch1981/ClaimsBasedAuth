@@ -17,12 +17,13 @@ namespace IdetityServer
         {
             services.AddMvc();
 
-            const string connectionString = @"Data Source=DESKTOP-PROEALE;database=IdentityServer;trusted_connection=yes;";
+            const string connectionString = @"Data Source=CLTDEVDSK2099;database=IdentityServer;trusted_connection=yes;";
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
+                .AddProfileService<CustomProfileService>()
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
                 {

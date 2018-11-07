@@ -10,16 +10,22 @@ namespace IdetityServer
     {// scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            var customProfile = new IdentityResource(
-                name: "custom.profile",
-                displayName: "Custom profile",
-                claimTypes: new[] { "name", "email", "NickName" });
+            var customProfile1 = new IdentityResource(
+                name: "customProfile1",
+                displayName: "Custom profile 1",
+                claimTypes: new[] { "foo" });
+
+            var customProfile2 = new IdentityResource(
+                name: "customProfile2",
+                displayName: "Custom profile 2",
+                claimTypes: new[] { "role" });
 
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                customProfile
+                customProfile1,
+                customProfile2
             };
         }
 
@@ -37,31 +43,6 @@ namespace IdetityServer
             // client credentials client
             return new List<Client>
             {
-                new Client
-                {
-                    ClientId = "client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                    ClientSecrets = 
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "api1" }
-                },
-
-                // resource owner password grant client
-                new Client
-                {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-
-                    ClientSecrets = 
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AllowedScopes = { "api1" }
-                },
-
                 // OpenID Connect hybrid flow and client credentials client (MVC)
                 new Client
                 {
@@ -81,30 +62,10 @@ namespace IdetityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "custom.profile",
-                        "api1"
+                        "customProfile1",
+                        "customProfile2"
                     },
                     AllowOfflineAccess = true
-                },
-
-                // JavaScript Client
-                new Client
-                {
-                    ClientId = "js",
-                    ClientName = "JavaScript Client",
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowAccessTokensViaBrowser = true,
-
-                    RedirectUris = { "http://localhost:5003/callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5003" },
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
-                    },
                 }
             };
         }

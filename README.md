@@ -33,6 +33,10 @@ for performing registration and authentication.
 
 ## IdentityServer
 
+#### Server
+
+Create Empty Core 2.1 Webapp
+
 Install IdentityServer4, IdentityServer4.EntityFramework, and Microsoft.EntityFrameworkCore.Tools.DotNet.
 
 Run below to test.  
@@ -40,7 +44,7 @@ Run below to test.
 dotnet ef 
 ```
 
-Bring in [Quickstart 8 Scaffolding](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage)
+Copy in QuickstartIdentityServer directory's from [Quickstart 8](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage/src/QuickstartIdentityServer)
 
 Run the migration Commands from the project directory
 ```cmd
@@ -49,6 +53,21 @@ dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c Config
 ```
 
 Create MVC Client from Quickstart.  
+
+#### Client
+
+Create Empty Core 2.1 Webapp
+
+Install IdentityModel
+
+Copy in MVCClient directories from [Quickstart 8](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage/src/MvcClient)
+and Edit namespace of all files.  
+
+**Notes:** 
+
+How access claims in a view(Secure.schtml) and a contoller(HomeController).
+  
+How to configure authentication with Identity Server 4 can be seen win the Startup.cs.   
 
 [ClaimsTroubleShooting 2.0](https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/)
 and [ClaimsTroubleShooting 2.1](https://leastprivilege.com/2018/06/14/improvements-in-claim-mapping-in-the-asp-net-core-2-1-openid-connect-handler/)

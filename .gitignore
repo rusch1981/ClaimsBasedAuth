@@ -32,3 +32,8 @@
 /MvcClient/.vs
 /MvcClient/MvcClient/bin
 /MvcClient/MvcClient/obj/Debug
+/IdetityServer/bin/Debug/netcoreapp2.1
+/IdetityServer/obj
+/MVC_Client/bin/Debug/netcoreapp2.1
+/MVC_Client/obj/Debug/netcoreapp2.1
+/MVC_Client/obj
