@@ -2,6 +2,8 @@
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdetityServer.ProfileServices;
+using IdetityServer.UserStores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +25,13 @@ namespace IdetityServer
             // configure identity server with in-memory stores, keys, clients and scopes
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
+
+                //TOGGLE IProfileService - works in conjunction with IUserStore
+                // Toggle Static TestUsers inject TestCustomProfileService 
+                //.AddProfileService<TestCustomProfileService>()
+                // Toggle Dynamic AD users inject CustomProfileService 
                 .AddProfileService<CustomProfileService>()
+
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
                 {
@@ -43,6 +51,11 @@ namespace IdetityServer
                     options.TokenCleanupInterval = 30;
                 });
 
+            //TOGGLE IUserStore - works in conjunction with IProfileService
+            // Toggle Static TestUsers inject CustomeTestUserStore 
+            //services.AddTransient<IUserStore, CustomTestUserStore>();
+            // Toggle Dynamic AD users inject CustomeTestUserStore 
+            services.AddTransient<IUserStore, CustomUserStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

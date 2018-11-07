@@ -1,7 +1,6 @@
-﻿using IdentityModel;
-using IdentityServer.Quickstart.UI;
-using IdentityServer4.Models;
+﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
+using IdetityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace IdetityServer
+namespace IdetityServer.ProfileServices
 {
     public class CustomProfileService : IProfileService
     {
@@ -17,14 +16,16 @@ namespace IdetityServer
         /// The logger
         /// </summary>
         protected readonly ILogger Logger;
+        private IUserStore UserStore; 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public CustomProfileService(ILogger<DefaultProfileService> logger)
+        public CustomProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
         {
             Logger = logger;
+            UserStore = userStore;
         }
 
         /// <summary>
@@ -41,9 +42,12 @@ namespace IdetityServer
             IEnumerable<string> requestTypes = context.RequestedClaimTypes;
             List<Claim> claims = new List<Claim>();
 
-            // DB here like so
-            string sub = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value;
-            ICollection<Claim> allClaims = TestUsers.Users.FirstOrDefault(x => x.SubjectId == sub).Claims;
+            
+            string subId = context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value;
+            var adUser = UserStore.FindBySubjectId(subId);
+
+            // retrieve user related Claims
+            ICollection<Claim> allClaims = UserStore.FindBySubjectId(subId).Claims;
             List<Claim> issuedClaims = new List<Claim>();
 
             if (requestTypes.Any())

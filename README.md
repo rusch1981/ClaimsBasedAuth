@@ -37,7 +37,8 @@ for performing registration and authentication.
 
 Create Empty Core 2.1 Webapp
 
-Install IdentityServer4, IdentityServer4.EntityFramework, and Microsoft.EntityFrameworkCore.Tools.DotNet.
+Install IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet, 
+and System.DirectoryServices.AccountManagement.
 
 Run below to test.  
 ```cmd
@@ -51,8 +52,16 @@ Run the migration Commands from the project directory
 dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
 ```
+##### Users and UserStore
+IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  
+The implementation CustomUserStore.cs uses Active Directory.  In order for of CustomUserStore.cs to 
+build correctly the "User*" tables must be created in the IdentityServer Data base for this project.  
+The Implementation of CustomTestUsers can be used with out the use of "User*" tables and is based on
+static users.
 
-Create MVC Client from Quickstart.  
+*Note - IUserStore must be used in conjunction with correct implementation of IProfileService also
+located in Startup.cs*
+ 
 
 #### Client
 
