@@ -21,5 +21,7 @@ namespace IdentityServer.Quickstart.UI
         public static bool IncludeWindowsGroups = false;
 
         public static string InvalidCredentialsErrorMessage = "Invalid username or password";
+        public static string InvalidUserErrorMessage = "Invalid User";
+        public static string GenericLogginError = "Unexpected Login Error, Please contact Administrator";
     }
 }

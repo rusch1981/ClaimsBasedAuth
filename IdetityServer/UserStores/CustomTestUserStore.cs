@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 
 namespace IdetityServer.UserStores
 {
@@ -13,6 +14,25 @@ namespace IdetityServer.UserStores
     {
         private readonly List<TestUser> _users;
 
+        private StringBuilder _ErrorMessage;
+
+        public string ErrorMessage
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_ErrorMessage.ToString()))
+                {
+                    return AccountOptions.GenericLogginError;
+                }
+
+                return _ErrorMessage.ToString();
+            }
+            private set
+            {
+                _ErrorMessage.Clear();
+                _ErrorMessage.Append(value);
+            }
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
         /// </summary>
@@ -27,7 +47,7 @@ namespace IdetityServer.UserStores
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        public bool ValidateCredentials(string username, string password)
+        public bool IsValidUser(string username, string password)
         {
             var user = FindByUsername(username);
             if (user != null)
@@ -35,6 +55,7 @@ namespace IdetityServer.UserStores
                 return user.Password.Equals(password);
             }
 
+            ErrorMessage = AccountOptions.InvalidCredentialsErrorMessage;
             return false;
         }
 
@@ -141,17 +162,6 @@ namespace IdetityServer.UserStores
             _users.Add(user);
 
             return user;
-        }
-
-        /// <summary>
-        /// returns true always
-        /// </summary>
-        /// <param name="userName">The provider.</param>
-        /// <param name="clientId">The user identifier.</param>
-        /// <returns></returns>
-        public bool HasClientAuthorization(string userName, string clientId)
-        {
-            return true;
         }
     }
 }

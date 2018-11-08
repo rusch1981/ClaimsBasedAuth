@@ -1,6 +1,8 @@
 ﻿//using IdenityServer4Example.Models;
 using IdentityModel;
+using IdentityServer.Quickstart.UI;
 using IdentityServer4.Test;
+using IdetityServer.Models;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -8,13 +10,34 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 
 namespace IdetityServer.UserStores
 {
     public class CustomUserStore : IUserStore
     {
         private List<TestUser> _users;
-        private bool _isValid;
+        private IdentityServerContext _DataContext;
+        private StringBuilder _ErrorMessage;
+
+        public string ErrorMessage
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_ErrorMessage.ToString()))
+                {
+                    return AccountOptions.GenericLogginError;
+                }
+
+                return _ErrorMessage.ToString();
+            }
+            private set
+            {
+                _ErrorMessage.Clear();
+                _ErrorMessage.Append(value);
+            }
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
@@ -23,6 +46,8 @@ namespace IdetityServer.UserStores
         public CustomUserStore()
         {
             _users = new List<TestUser>();
+            _DataContext = new IdentityServerContext();
+            _ErrorMessage = new StringBuilder();
         }
 
         /// <summary>
@@ -31,55 +56,28 @@ namespace IdetityServer.UserStores
         /// <param name="username">The username.</param>
         /// <param name="password">The password.</param>
         /// <returns></returns>
-        public bool ValidateCredentials(string username, string password)
+        public bool IsValidUser(string username, string password)
         {
             //Encapsulates the server or domain against which all operations are performed. 
             using (PrincipalContext domainContext = new PrincipalContext(ContextType.Domain))
             {
-                //validates user based on username and password
-                _isValid = domainContext.ValidateCredentials(username, password);
 
-                if (_isValid)
+
+                if (!_DataContext.Users.Any(x => x.UserName == username))
                 {
-                    //Create a "user object" in the context
-                    using (UserPrincipal user = new UserPrincipal(domainContext))
-                    {
-                        //Specify the search parameters
-                        user.SamAccountName = username;
+                    ErrorMessage = AccountOptions.InvalidUserErrorMessage;
+                    return false;
+                }
 
-                        //Create the searcher
-                        PrincipalSearcher searcher = new PrincipalSearcher();
-                        //Define Filter
-                        searcher.QueryFilter = user;
-
-                        //Query Results based on filter
-                        PrincipalSearchResult<System.DirectoryServices.AccountManagement.Principal> results = searcher.FindAll();
-
-                        if (results.Count() == 1)
-                        {
-                            _users = new List<TestUser>
-                            {
-                                new TestUser
-                                {
-                                    SubjectId = results.FirstOrDefault().Sid.ToString(),
-                                    Username = results.FirstOrDefault().SamAccountName,
-                                    Claims =
-                                    {
-                                        new Claim(JwtClaimTypes.Name, results.FirstOrDefault().DisplayName)
-                                    }
-                                }
-                            };
-                        }
-                        else
-                        {
-                            // Probably should throw an exception or notify admin if multiple users returned but for now just fail the login
-                            _isValid = false;
-                        }
-                    }
+                if (!domainContext.ValidateCredentials(username, password) ||
+                    UserPrincipal.FindByIdentity(domainContext, username)?.Enabled == false)
+                {
+                    ErrorMessage = AccountOptions.InvalidCredentialsErrorMessage;
+                    return false;
                 }
             }
 
-            return _isValid;
+            return true;
         }
 
         /// <summary>
@@ -89,49 +87,17 @@ namespace IdetityServer.UserStores
         /// <returns></returns>
         public TestUser FindBySubjectId(string subjectId)
         {
-            if (_isValid && _users.Any(x => x.SubjectId == subjectId))
-            {
-                return _users.FirstOrDefault(x => x.SubjectId == subjectId);
-            }
-
-            return LookUpSubjectById(subjectId);
-        }
-
-        /// <summary>
-        /// Looks up User by subject identifier from Active Directory.
-        /// </summary>
-        /// <param name="subjectId">The subject identifier.</param>
-        /// <returns></returns>
-        private TestUser LookUpSubjectById(string subjectId)
-        {
             using (PrincipalContext domainContext = new PrincipalContext(ContextType.Domain))
             {
-                //Create a "user object" in the context
                 using (UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, IdentityType.Sid, (subjectId)))
                 {
 
-                    if (user != null)
+                    return new TestUser
                     {
-                        _users = new List<TestUser>
-                            {
-                                new TestUser
-                                {
-                                    SubjectId = user.Sid.ToString(),
-                                    Username = user.SamAccountName,
-                                    Claims =
-                                    {
-                                        new Claim(JwtClaimTypes.Name, user.DisplayName)
-                                    }
-                                }
-                            };                        
-                    }
-                    else
-                    {                        
-                        // Probably should throw an exception if zero users returned but for now just fail the login
-                        _users = new List<TestUser>();
-                    }
-
-                    return _users.FirstOrDefault();
+                        SubjectId = user.Sid.ToString(),
+                        Username = user.SamAccountName,
+                        Claims = { new Claim(JwtClaimTypes.Name, user.DisplayName) }
+                    };
                 }
             }
         }
@@ -143,52 +109,22 @@ namespace IdetityServer.UserStores
         /// <returns></returns>
         public TestUser FindByUsername(string username)
         {
-            if (_isValid && _users.Any(x => x.Username == username))
-            {
-                return _users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-            }
-
-            return LookUpSubjectByName(username);
-        }
-
-        /// <summary>
-        /// Looks up User by username from Active Directory.
-        /// </summary>
-        /// <param name="username">The subject identifier.</param>
-        /// <returns></returns>
-        private TestUser LookUpSubjectByName(string name)
-        {
             using (PrincipalContext domainContext = new PrincipalContext(ContextType.Domain))
             {
                 //Create a "user object" in the context
-                using (UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, name))
+                using (UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, username))
                 {
-                    if (user != null)
+                    return new TestUser
                     {
-                        _users = new List<TestUser>
-                            {
-                                new TestUser
-                                {
-                                    SubjectId = user.Sid.ToString(),
-                                    Username = user.SamAccountName,
-                                    Claims =
-                                    {
-                                        new Claim(JwtClaimTypes.Name, user.DisplayName)
-                                    }
-                                }
-                            };
-                    }
-                    else
-                    {
-                        // Probably should throw an exception if zero users returned but for now just fail the login
-                        _users = new List<TestUser>();
-                    }
-
-                    return _users.FirstOrDefault();
+                        SubjectId = user.Sid.ToString(),
+                        Username = user.SamAccountName,
+                        Claims = {  new Claim(JwtClaimTypes.Name, user.DisplayName) }
+                    };
                 }
             }
         }
 
+        //todo clean up unneeded code
         /// <summary>
         /// Finds the user by external provider.
         /// </summary>
@@ -272,27 +208,6 @@ namespace IdetityServer.UserStores
             _users.Add(user);
 
             return user;
-        }
-
-        /// <summary>
-        /// Tests access rights for the user against client.  
-        /// </summary>
-        /// <param name="userName">The user identifier.</param>
-        /// <param name="clientId">The claims.</param>
-        /// <returns></returns>
-        public bool HasClientAuthorization(string userName, string clientId)
-        {
-            //test against database to see if UserName has authrization rights
-            //IdentityServer4Context context = new IdentityServer4Context();
-            //Users user = context.Users.Where(u => u.UserName == userName).FirstOrDefault();
-            //Clients client = context.Clients.Where(c => c.ClientId == clientId).FirstOrDefault();
-
-            //if (user != null && client != null)
-            //{
-            //    return context.UsersScopes.Where(u => u.ClientsId == client.Id && u.UsersId == user.Id).Any();
-            //}
-
-            return false;
         }
     }
 }

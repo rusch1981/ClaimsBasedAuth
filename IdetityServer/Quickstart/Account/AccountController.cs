@@ -100,7 +100,7 @@ namespace IdentityServer.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against user store
-                if (_users.ValidateCredentials(model.Username, model.Password))
+                if (_users.IsValidUser(model.Username, model.Password))
                 {
                     var user = _users.FindByUsername(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username));
@@ -130,9 +130,9 @@ namespace IdentityServer.Quickstart.UI
                     return Redirect("~/");
                 }
 
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials"));
+                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, _users.ErrorMessage));
 
-                ModelState.AddModelError("", AccountOptions.InvalidCredentialsErrorMessage);
+                ModelState.AddModelError("", _users.ErrorMessage);
             }
 
             // something went wrong, show form with error

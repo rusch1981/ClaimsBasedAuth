@@ -44,17 +44,32 @@ namespace IdetityServer.ProfileServices
             context.AddRequestedClaims(context.Subject.Claims);
 
             var aD_User = UserStore.FindBySubjectId(context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value);
-            int dB_UserId = _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username).Id;
-            int dB_ClientId = _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId).Id;            
+
+            //Maybe remove these terinaries and just validate and skip all the below stuff  
+            int dB_UserId = _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username) != null ?
+                _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username).Id :
+                //a number that won't return from the DB this will allow gracefull processing with only the user name claim
+                0;
+            int dB_ClientId = _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId) != null?
+                _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId).Id :
+                //a number that won't return from the DB this will allow gracefull processing with only the user name claim
+                0;
+
             List<Claim> issuedClaims = new List<Claim>();     
-            StringBuilder allRoles = new StringBuilder("");
+            StringBuilder allRoles = new StringBuilder(string.Empty);
 
 
             foreach (var userClientRoles in _DataContext.UsersClientsRoles.Where(x => x.UserId == dB_UserId && x.ClientId == dB_ClientId && x.UserRoleId != 0))
             {
                 string role = _DataContext.UsersRoles.FirstOrDefault(x => x.Id == userClientRoles.UserRoleId).Role;
-
-                allRoles.Append(" " + role);
+                if (allRoles.ToString().Equals(string.Empty))
+                {
+                    allRoles.Append(role);
+                }
+                else
+                {
+                    allRoles.Append(" " + role);
+                }
             }
 
             List<Claim> allClaims = new List<Claim>
