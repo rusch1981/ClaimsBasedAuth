@@ -1,24 +1,28 @@
-﻿//using IdenityServer4Example.Models;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer.Quickstart.UI;
 using IdentityServer4.Test;
 using IdetityServer.Models;
-using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 
 namespace IdetityServer.UserStores
 {
     public class ActiveDirectoryUserStore : IUserStore
     {
-        private List<TestUser> _users;
-        private IdentityServerContext _DataContext;
-        private StringBuilder _ErrorMessage;
+        #region Constants, Enums
+        #endregion
+        #region Fields
+
+        private readonly List<TestUser> _users;
+        private readonly IdentityServerContext _DataContext;
+        private readonly StringBuilder _ErrorMessage;
+
+        #endregion
+        #region Properties	        
 
         public string ErrorMessage
         {
@@ -38,6 +42,8 @@ namespace IdetityServer.UserStores
             }
         }
 
+        #endregion
+        #region Constructors/Destructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
@@ -49,6 +55,9 @@ namespace IdetityServer.UserStores
             _DataContext = new IdentityServerContext();
             _ErrorMessage = new StringBuilder();
         }
+
+        #endregion
+        #region Events/Methods	
 
         /// <summary>
         /// Validates the credentials.
@@ -209,5 +218,6 @@ namespace IdetityServer.UserStores
 
             return user;
         }
+        #endregion
     }
 }

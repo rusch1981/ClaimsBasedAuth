@@ -1,5 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
+using IdentityServer4.Test;
 using IdetityServer.Models;
 using IdetityServer.UserStores;
 using Microsoft.Extensions.Logging;
@@ -14,12 +15,91 @@ namespace IdetityServer.ProfileServices
 {
     public class ActiveDirectoryProfileService : IProfileService
     {
+        #region Constants, Enums
+        #endregion
+        #region Fields
+
         /// <summary>
         /// The logger
         /// </summary>
         protected readonly ILogger Logger;
-        private IUserStore UserStore;
-        private IdentityServerContext _DataContext;
+        private readonly IUserStore UserStore;
+        private readonly IdentityServerContext _DataContext;
+
+        #endregion
+        #region Properties
+        #endregion
+        #region Constructors/Destructors
+        #endregion
+        #region Events/Methods		
+
+        private string RetrieveUserRolesBasedOnClientContext(Client client, string userName)
+        {
+            StringBuilder allRoles = new StringBuilder(string.Empty);
+            int? dB_UserId = GetDababaseUserId(userName);
+            int? dB_ClientId = GetDababaseClientId(client);
+
+            if (dB_ClientId == null || dB_UserId == null)
+            {
+                return string.Empty;
+            }
+
+            foreach (var userClientRoles in _DataContext.UsersClientsRoles.Where(x => x.UserId == dB_UserId && x.ClientId == dB_ClientId && x.UserRoleId != 0))
+            {
+                string role = _DataContext.UsersRoles.FirstOrDefault(x => x.Id == userClientRoles.UserRoleId).Role;
+                if (allRoles.ToString().Equals(string.Empty))
+                {
+                    allRoles.Append(role);
+                }
+                else
+                {
+                    allRoles.Append(" " + role);
+                }
+            }
+
+            return allRoles.ToString();
+        }
+
+        /// <summary>
+        /// Get IdentityServer Database User ID.
+        /// If no user exists will return null
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        private int? GetDababaseUserId(string userName)
+        {
+            if (_DataContext.Users.FirstOrDefault(x => x.UserName == userName) != null)
+            {
+                return _DataContext.Users.FirstOrDefault(x => x.UserName == userName).Id;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get IdentityServer Database Client ID
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        private int? GetDababaseClientId(Client client)
+        {
+            if (_DataContext.Clients.FirstOrDefault(x => x.ClientId == client.ClientId) != null)
+            {
+                return _DataContext.Clients.FirstOrDefault(x => x.ClientId == client.ClientId).Id;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Get User from Active Directory
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <returns></returns>
+        private TestUser GetActiveDirectoryUser(ClaimsPrincipal principal)
+        {
+            return UserStore.FindBySubjectId(principal.Claims.FirstOrDefault(x => x.Type == "sub").Value);
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
@@ -40,44 +120,18 @@ namespace IdetityServer.ProfileServices
         public virtual Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             context.LogProfileRequest(Logger);
-            //  do not remove.  This is need to populate all tokens with the subject claim
-            context.AddRequestedClaims(context.Subject.Claims);
 
-            var aD_User = UserStore.FindBySubjectId(context.Subject.Claims.FirstOrDefault(x => x.Type == "sub").Value);
-
-            //Maybe remove these terinaries and just validate and skip all the below stuff  
-            int dB_UserId = _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username) != null ?
-                _DataContext.Users.FirstOrDefault(x => x.UserName == aD_User.Username).Id :
-                //a number that won't return from the DB this will allow gracefull processing with only the user name claim
-                0;
-            int dB_ClientId = _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId) != null?
-                _DataContext.Clients.FirstOrDefault(x => x.ClientId == context.Client.ClientId).Id :
-                //a number that won't return from the DB this will allow gracefull processing with only the user name claim
-                0;
-
-            List<Claim> issuedClaims = new List<Claim>();     
-            StringBuilder allRoles = new StringBuilder(string.Empty);
-
-
-            foreach (var userClientRoles in _DataContext.UsersClientsRoles.Where(x => x.UserId == dB_UserId && x.ClientId == dB_ClientId && x.UserRoleId != 0))
-            {
-                string role = _DataContext.UsersRoles.FirstOrDefault(x => x.Id == userClientRoles.UserRoleId).Role;
-                if (allRoles.ToString().Equals(string.Empty))
-                {
-                    allRoles.Append(role);
-                }
-                else
-                {
-                    allRoles.Append(" " + role);
-                }
-            }
+            string userName = GetActiveDirectoryUser(context.Subject).Username;            
 
             List<Claim> allClaims = new List<Claim>
             {
-                new Claim("name", aD_User.Username),
-                new Claim("role", allRoles.ToString())
+                new Claim("name", userName),
+                new Claim("role", RetrieveUserRolesBasedOnClientContext(context.Client, userName))
             };
 
+            List<Claim> issuedClaims = new List<Claim>();
+
+            //Only issue requested claims
             if (context.RequestedClaimTypes.Any())
             {
                 foreach (var claim in allClaims)
@@ -89,7 +143,8 @@ namespace IdetityServer.ProfileServices
                 }
             }
 
-            //add claims to context
+            //  do not remove.  This is need to populate all tokens with the subject claim
+            context.AddRequestedClaims(context.Subject.Claims);
             context.IssuedClaims = issuedClaims;
 
             context.LogIssuedClaims(Logger);
@@ -110,5 +165,7 @@ namespace IdetityServer.ProfileServices
             context.IsActive = true;
             return Task.CompletedTask;
         }
+
+        #endregion
     }
 }
