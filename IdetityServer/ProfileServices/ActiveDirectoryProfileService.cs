@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IdetityServer.ProfileServices
 {
-    public class CustomProfileService : IProfileService
+    public class ActiveDirectoryProfileService : IProfileService
     {
         /// <summary>
         /// The logger
@@ -25,7 +25,7 @@ namespace IdetityServer.ProfileServices
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public CustomProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
+        public ActiveDirectoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
         {
             Logger = logger;
             UserStore = userStore;

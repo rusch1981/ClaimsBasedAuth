@@ -10,7 +10,7 @@ using System.Text;
 
 namespace IdetityServer.UserStores
 {
-    public class CustomTestUserStore : IUserStore 
+    public class InMemoryUserStore : IUserStore 
     {
         private readonly List<TestUser> _users;
 
@@ -36,7 +36,7 @@ namespace IdetityServer.UserStores
         /// <summary>
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
         /// </summary>
-        public CustomTestUserStore()
+        public InMemoryUserStore()
         {
             _users = new List<TestUser>(TestUsers.Users);
         }

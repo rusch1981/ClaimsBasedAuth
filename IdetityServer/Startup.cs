@@ -34,10 +34,10 @@ namespace IdetityServer
                 .AddDeveloperSigningCredential()
 
                 //TOGGLE IProfileService - works in conjunction with IUserStore
-                // Toggle Static TestUsers inject TestCustomProfileService 
-                //.AddProfileService<TestCustomProfileService>()
-                // Toggle Dynamic AD users inject CustomProfileService 
-                .AddProfileService<CustomProfileService>()
+                // Toggle Static TestUsers inject InMemoryProfileService 
+                //.AddProfileService<InMemoryProfileService>()
+                // Toggle Dynamic AD users inject ActiveDirectoryProfileService 
+                .AddProfileService<ActiveDirectoryProfileService>()
 
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
@@ -59,10 +59,10 @@ namespace IdetityServer
                 });
 
             //TOGGLE IUserStore - works in conjunction with IProfileService
-            // Toggle Static TestUsers inject CustomeTestUserStore 
-            //services.AddTransient<IUserStore, CustomTestUserStore>();
-            // Toggle Dynamic AD users inject CustomeTestUserStore 
-            services.AddTransient<IUserStore, CustomUserStore>();
+            // Toggle Static TestUsers inject InMemoryUserStore 
+            //services.AddTransient<IUserStore, InMemoryUserStore>();
+            // Toggle Dynamic AD users inject ActiveDirectoryUserStore 
+            services.AddTransient<IUserStore, ActiveDirectoryUserStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

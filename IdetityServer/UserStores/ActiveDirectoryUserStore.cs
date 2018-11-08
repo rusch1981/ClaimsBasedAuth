@@ -14,7 +14,7 @@ using System.Text;
 
 namespace IdetityServer.UserStores
 {
-    public class CustomUserStore : IUserStore
+    public class ActiveDirectoryUserStore : IUserStore
     {
         private List<TestUser> _users;
         private IdentityServerContext _DataContext;
@@ -43,7 +43,7 @@ namespace IdetityServer.UserStores
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
         /// </summary>
         /// <param name="users">The users.</param>
-        public CustomUserStore()
+        public ActiveDirectoryUserStore()
         {
             _users = new List<TestUser>();
             _DataContext = new IdentityServerContext();

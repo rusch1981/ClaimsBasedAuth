@@ -60,9 +60,9 @@ Scaffold-DbContext "Data Source=localhost;database=IdentityServer4;trusted_conne
 
 ##### Users and UserStore
 IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  
-The implementation CustomUserStore.cs uses Active Directory.  In order for of CustomUserStore.cs to 
+The implementation ActiveDirectoryUserStore.cs uses Active Directory.  In order for of ActiveDirectoryUserStore.cs to 
 build correctly the "User*" tables must be created in the IdentityServer Data base for this project.  
-The Implementation of CustomTestUsers can be used with out the use of "User*" tables and is based on
+The Implementation of InMemoryUserStore.cs can be used with out the use of "User*" tables and is based on
 static users.
 
 *Note - IUserStore must be used in conjunction with correct implementation of IProfileService also

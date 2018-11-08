@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace IdetityServer.ProfileServices
 {
-    public class TestCustomProfileService : IProfileService
+    public class InMemoryProfileService : IProfileService
     {
         /// <summary>
         /// The logger
@@ -22,7 +22,7 @@ namespace IdetityServer.ProfileServices
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public TestCustomProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
+        public InMemoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
         {
             Logger = logger;
             UserStore = userStore;
