@@ -37,8 +37,8 @@ for performing registration and authentication.
 
 Create Empty Core 2.1 Webapp
 
-Install IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet, 
-and System.DirectoryServices.AccountManagement.
+Install IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
+Microsoft.Extensions.Configuration, and System.DirectoryServices.AccountManagement.
 
 Run below to test.  
 ```cmd

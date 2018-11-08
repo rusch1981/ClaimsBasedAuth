@@ -7,19 +7,26 @@ using IdetityServer.UserStores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IdetityServer
 {
     public class Startup
     {
+        private readonly IConfiguration _config;
+
+        public Startup(IConfiguration config)
+        {
+            _config = config;
+        }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
-            const string connectionString = @"Data Source=CLTDEVDSK2099;database=IdentityServer;trusted_connection=yes;";
+            string connectionString = _config.GetSection("ConnectionsStrings:IdentityServerDatabase").Value;
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // configure identity server with in-memory stores, keys, clients and scopes
