@@ -67,9 +67,39 @@ static users.
 
 *Note - IUserStore must be used in conjunction with correct implementation of IProfileService also
 located in Startup.cs*
- 
 
-#### Client
+##### Setting up Users and Client in the Database
+
+Scripts to assist with data creation:
+* [IdSrvClientSetUp.sql](scripts/IdSrvClientSetUp.sql)
+* [IdSrvUserTearDownSetUp.sql](scripts/IdSrvUserTearDownSetUp.sql)
+
+When inserting a *Secret* in the *ClientSecrets* table you can use the following code to create your
+hash:
+``` c#
+using System;
+using System.Security.Cryptography;
+using System.Text;
+					
+public class Program
+{
+    public static void Main()
+    {
+        using (var sha = SHA256.Create())
+        {
+            var bytes = Encoding.UTF8.GetBytes("secret");
+            var hash = sha.ComputeHash(bytes);
+            string hashForDatabase = Convert.ToBase64String(hash);
+		
+	    Console.WriteLine(hashForDatabase);
+	}
+    }
+}
+```
+ 
+### ClientSamples
+
+#### MVC_Client (Core)
 
 Create Empty Core 2.1 Webapp
 
@@ -77,13 +107,24 @@ Install IdentityModel
 
 Copy in MVCClient directories from [Quickstart 8](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage/src/MvcClient)
 and Edit namespace of all files.  
-
-**Notes:** 
-
-How access claims in a view(Secure.schtml) and a contoller(HomeController).
   
-How to configure authentication with Identity Server 4 can be seen win the Startup.cs.   
+How to configure authentication with Identity Server 4 can be seen in the Startup.cs.   
+
+
 
 [ClaimsTroubleShooting 2.0](https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/)
 and [ClaimsTroubleShooting 2.1](https://leastprivilege.com/2018/06/14/improvements-in-claim-mapping-in-the-asp-net-core-2-1-openid-connect-handler/)
 https://github.com/IdentityServer/IdentityServer4/issues/2213
+
+
+#### MVCClient (Full Framework)
+
+Create Empty Full FrameWork Webapp
+
+Install IdentityModel
+
+Set up MVCClient directories as in [Getting Started: MVC Authentication & Web APIs](https://identityserver.github.io/Documentation/docsv2/overview/mvcGettingStarted.html).  
+
+**Notes:** 
+  
+How to configure authentication with Identity Server 4 can be seen in the Startup.cs.   

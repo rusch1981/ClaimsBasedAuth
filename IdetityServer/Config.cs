@@ -66,6 +66,30 @@ namespace IdetityServer
                         "customProfile2"
                     },
                     AllowOfflineAccess = true
+                },
+
+                new Client
+                {
+                    ClientId = "mvc2",
+                    ClientName = "MVC Client",
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    RedirectUris = { "https://localhost:44330" },
+                    PostLogoutRedirectUris = { "https://localhost:44330" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "customProfile1",
+                        "customProfile2"
+                    },
+                    AllowOfflineAccess = true
                 }
             };
         }
