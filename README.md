@@ -37,8 +37,10 @@ for performing registration and authentication.
 
 Create Empty Core 2.1 Webapp
 
-Install IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
+Install: IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
 Microsoft.Extensions.Configuration, and System.DirectoryServices.AccountManagement.
+
+Logging install:  Serilog.AspNetCore, Serilog.Sinks.Console, and Serilog.Sinks.File 
 
 Run below to test.  
 ```cmd
@@ -57,6 +59,8 @@ Set up user tables and migrate EF data model to project.
 ```cmd
 Scaffold-DbContext "Data Source=localhost;database=IdentityServer4;trusted_connection=yes;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 ```
+***Caution**: by scaffolding the model the dbcontext class autmatically generates a connection string that will 
+be used if you do not set the connections in options (see Startup.cs for example)*
 
 ##### Users and UserStore
 IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  

@@ -54,8 +54,6 @@ namespace MVC_Client
 
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
-
-                    //options.ClaimActions.MapAllExcept("iss", "nbf", "exp", "aud", "nonce", "iat", "c_hash");
                 });
         }
 

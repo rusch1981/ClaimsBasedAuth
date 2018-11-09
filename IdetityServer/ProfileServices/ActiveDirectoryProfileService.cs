@@ -30,6 +30,18 @@ namespace IdetityServer.ProfileServices
         #region Properties
         #endregion
         #region Constructors/Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        public ActiveDirectoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore, IdentityServerContext dataContext)
+        {
+            Logger = logger;
+            UserStore = userStore;
+            _DataContext = dataContext;
+        }
+
         #endregion
         #region Events/Methods		
 
@@ -100,18 +112,7 @@ namespace IdetityServer.ProfileServices
         {
             return UserStore.FindBySubjectId(principal.Claims.FirstOrDefault(x => x.Type == "sub").Value);
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        public ActiveDirectoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore)
-        {
-            Logger = logger;
-            UserStore = userStore;
-            _DataContext = new IdentityServerContext();
-        }
-
+        
         /// <summary>
         /// This method is called whenever claims about the user are requested (e.g. during token creation or via the userinfo endpoint)
         /// </summary>

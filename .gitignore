@@ -37,3 +37,5 @@
 /MVC_Client/bin/Debug/netcoreapp2.1
 /MVC_Client/obj/Debug/netcoreapp2.1
 /MVC_Client/obj
+/IdetityServer/bin/IISSupport
+/IdetityServer/Logs

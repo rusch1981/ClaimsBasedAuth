@@ -18,8 +18,8 @@ namespace IdetityServer.UserStores
         #region Fields
 
         private readonly List<TestUser> _users;
-        private readonly IdentityServerContext _DataContext;
-        private readonly StringBuilder _ErrorMessage;
+        private readonly IdentityServerContext _dataContext;
+        private readonly StringBuilder _errorMessage;
 
         #endregion
         #region Properties	        
@@ -28,17 +28,17 @@ namespace IdetityServer.UserStores
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_ErrorMessage.ToString()))
+                if (string.IsNullOrWhiteSpace(_errorMessage.ToString()))
                 {
                     return AccountOptions.GenericLogginError;
                 }
 
-                return _ErrorMessage.ToString();
+                return _errorMessage.ToString();
             }
             private set
             {
-                _ErrorMessage.Clear();
-                _ErrorMessage.Append(value);
+                _errorMessage.Clear();
+                _errorMessage.Append(value);
             }
         }
 
@@ -49,11 +49,11 @@ namespace IdetityServer.UserStores
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
         /// </summary>
         /// <param name="users">The users.</param>
-        public ActiveDirectoryUserStore()
+        public ActiveDirectoryUserStore(IdentityServerContext dataContext)
         {
             _users = new List<TestUser>();
-            _DataContext = new IdentityServerContext();
-            _ErrorMessage = new StringBuilder();
+            _dataContext = dataContext;
+            _errorMessage = new StringBuilder();
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace IdetityServer.UserStores
             {
 
 
-                if (!_DataContext.Users.Any(x => x.UserName == username))
+                if (!_dataContext.Users.Any(x => x.UserName == username))
                 {
                     ErrorMessage = AccountOptions.InvalidUserErrorMessage;
                     return false;

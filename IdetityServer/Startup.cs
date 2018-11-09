@@ -2,6 +2,7 @@
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdetityServer.Models;
 using IdetityServer.ProfileServices;
 using IdetityServer.UserStores;
 using Microsoft.AspNetCore.Builder;
@@ -34,10 +35,10 @@ namespace IdetityServer
                 .AddDeveloperSigningCredential()
 
                 //TOGGLE IProfileService - works in conjunction with IUserStore
-                // Toggle Static TestUsers inject InMemoryProfileService 
-                //.AddProfileService<InMemoryProfileService>()
+                //Toggle Static TestUsers inject InMemoryProfileService 
+                .AddProfileService<InMemoryProfileService>()
                 // Toggle Dynamic AD users inject ActiveDirectoryProfileService 
-                .AddProfileService<ActiveDirectoryProfileService>()
+                //.AddProfileService<ActiveDirectoryProfileService>()
 
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
@@ -58,18 +59,31 @@ namespace IdetityServer
                     options.TokenCleanupInterval = 30;
                 });
 
+            //Add scaffolded DbContext Connection String
+            services.AddDbContext<IdentityServerContext>(options =>
+            options.UseSqlServer(_config.GetSection("ConnectionsStrings:IdentityServerDatabase").Value)
+            );
+
             //TOGGLE IUserStore - works in conjunction with IProfileService
             // Toggle Static TestUsers inject InMemoryUserStore 
-            //services.AddTransient<IUserStore, InMemoryUserStore>();
+            services.AddTransient<IUserStore, InMemoryUserStore>();
             // Toggle Dynamic AD users inject ActiveDirectoryUserStore 
-            services.AddTransient<IUserStore, ActiveDirectoryUserStore>();
+            //services.AddTransient<IUserStore, ActiveDirectoryUserStore>();
+            
+
+            services.Configure<IISOptions>(iis =>
+            {
+                iis.AuthenticationDisplayName = "Windows";
+                iis.AutomaticAuthentication = false;
+            }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // this will do the initial DB population
-            InitializeDatabase(app);
+            //InitializeDatabase(app);
 
             if (env.IsDevelopment())
             {
