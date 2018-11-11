@@ -30,15 +30,15 @@ namespace IdetityServer
             string connectionString = _config.GetSection("ConnectionsStrings:IdentityServerDatabase").Value;
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
-            // configure identity server with in-memory stores, keys, clients and scopes
+            // configure identity server with stores, keys, clients and scopes
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
 
                 //TOGGLE IProfileService - works in conjunction with IUserStore
                 //Toggle Static TestUsers inject InMemoryProfileService 
-                .AddProfileService<InMemoryProfileService>()
+                //.AddProfileService<InMemoryProfileService>()
                 // Toggle Dynamic AD users inject ActiveDirectoryProfileService 
-                //.AddProfileService<ActiveDirectoryProfileService>()
+                .AddProfileService<ActiveDirectoryProfileService>()
 
                 // this adds the config data from DB (clients, resources)
                 .AddConfigurationStore(options =>
@@ -66,9 +66,9 @@ namespace IdetityServer
 
             //TOGGLE IUserStore - works in conjunction with IProfileService
             // Toggle Static TestUsers inject InMemoryUserStore 
-            services.AddTransient<IUserStore, InMemoryUserStore>();
+            //services.AddTransient<IUserStore, InMemoryUserStore>();
             // Toggle Dynamic AD users inject ActiveDirectoryUserStore 
-            //services.AddTransient<IUserStore, ActiveDirectoryUserStore>();
+            services.AddTransient<IUserStore, ActiveDirectoryUserStore>();
             
 
             services.Configure<IISOptions>(iis =>

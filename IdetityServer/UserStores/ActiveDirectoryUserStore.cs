@@ -78,6 +78,7 @@ namespace IdetityServer.UserStores
                     return false;
                 }
 
+                // check to see if the user is enabled and the credentials are valid.  
                 if (!domainContext.ValidateCredentials(username, password) ||
                     UserPrincipal.FindByIdentity(domainContext, username)?.Enabled == false)
                 {

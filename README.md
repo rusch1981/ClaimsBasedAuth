@@ -35,19 +35,34 @@ for performing registration and authentication.
 
 #### Server
 
-Create Empty Core 2.1 Webapp
+##### Running for the First Time
+* Clone this repo.
+* Uncomment the InitializeDatabase() method call in Startup.Configure()
+* Update the "IdentityServerDatabase" Connection String in the appsetting.json file
+* Run the project in visual studio as a local project (the database should now be created using TestUsers.cs)
+* Comment out InitializeDatabase()
+* Run the table creation Scripts from IdSrvUserTearDownSetUp.sql
+  * Run the alter table scripts using your user data so you can log in.  
 
-Install: IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
+You should now be able to browse to the discovery document and test the server login using the MVC_Client project. 
+See **Users and UserStores** beloe for additinal information on user configuration.  
+
+##### Initial Setup Notes:
+
+Created from an Empty Core 2.1 Webapp
+
+Installed: IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
 Microsoft.Extensions.Configuration, and System.DirectoryServices.AccountManagement.
 
-Logging install:  Serilog.AspNetCore, Serilog.Sinks.Console, and Serilog.Sinks.File 
+Logging installed:  Serilog.AspNetCore, Serilog.Sinks.Console, and Serilog.Sinks.File 
 
-Run below to test.  
+Run below to test Net Entity Framework tooling is istalled.  
 ```cmd
 dotnet ef 
 ```
 
 Copy in QuickstartIdentityServer directory's from [Quickstart 8](https://github.com/IdentityServer/IdentityServer4.Samples/tree/release/Quickstarts/8_EntityFrameworkStorage/src/QuickstartIdentityServer)
+and set your connection string with userId and password.  
 
 Run the migration Commands from the project directory
 ```cmd
@@ -55,14 +70,19 @@ dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c Persi
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
 ```
 
-Set up user tables and migrate EF data model to project.
-```cmd
-Scaffold-DbContext "Data Source=localhost;database=IdentityServer4;trusted_connection=yes;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
-```
-***Caution**: by scaffolding the model the dbcontext class autmatically generates a connection string that will 
-be used if you do not set the connections in options (see Startup.cs for example)*
+At this point the Identity Server Database will be created when you run the project.  The sample data is pulled from the 
+TestUsers.cs file.
 
-##### Users and UserStore
+Set up user tables and some sample data using the IdSrvUserTearDownSetUp.sql.
+
+Migrate EF data model to project.  
+```cmd
+Scaffold-DbContext "Data Source=localhost;database=IdentityServer;trusted_connection=yes;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+```
+***Caution**: by scaffolding the model the dbcontext class autmatically generates\d a connection string that was being used.
+Instead the dbcontext should be injected and passed the connection string via appsettings.json  (see Startup.cs for example).*
+
+##### Users and UserStores
 IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  
 The implementation ActiveDirectoryUserStore.cs uses Active Directory.  In order for of ActiveDirectoryUserStore.cs to 
 build correctly the "User*" tables must be created in the IdentityServer Data base for this project.  
