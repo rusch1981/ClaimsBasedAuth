@@ -1,7 +1,7 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Test;
-using IdentityServer.Models;
+using IdentityServer.DAL.Models;
 using IdentityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;

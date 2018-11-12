@@ -1,13 +1,13 @@
 ﻿using IdentityModel;
-using IdentityServer.Quickstart.UI;
 using IdentityServer4.Test;
-using IdentityServer.Models;
+using IdentityServer.DAL.Models;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using IdentityServer.Models.Account;
 
 namespace IdentityServer.UserStores
 {

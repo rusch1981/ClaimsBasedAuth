@@ -1,5 +1,6 @@
 ﻿using IdentityModel;
-using IdentityServer.Quickstart.UI;
+using IdentityServer.Models;
+using IdentityServer.Models.Account;
 using IdentityServer4.Test;
 using System;
 using System.Collections.Generic;

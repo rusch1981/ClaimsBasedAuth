@@ -2,7 +2,7 @@
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer.Models;
+using IdentityServer.DAL.Models;
 using IdentityServer.ProfileServices;
 using IdentityServer.UserStores;
 using Microsoft.AspNetCore.Builder;
