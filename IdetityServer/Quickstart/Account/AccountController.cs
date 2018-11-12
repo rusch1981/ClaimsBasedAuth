@@ -55,18 +55,17 @@ namespace IdentityServer.Quickstart.UI
         /// Show login page
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        public async Task<IActionResult> LoginPage(string returnUrl)
         {
-            // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            if (vm.IsExternalLoginOnly)
-            {
-                // we only have one option for logging in and it's an external provider
-                return await ExternalLogin(vm.ExternalLoginScheme, returnUrl);
-            }
-
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Login(string returnUrl)
+        {
+                return await ExternalLogin(returnUrl);
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace IdentityServer.Quickstart.UI
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model, string button)
+        public async Task<IActionResult> LoginPage(LoginInputModel model, string button)
         {
             if (button != "login")
             {
@@ -144,27 +143,10 @@ namespace IdentityServer.Quickstart.UI
         /// initiate roundtrip to external authentication provider
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
+        public async Task<IActionResult> ExternalLogin(string returnUrl)
         {
-            if (AccountOptions.WindowsAuthenticationSchemeName == provider)
-            {
                 // windows authentication needs special handling
                 return await ProcessWindowsLoginAsync(returnUrl);
-            }
-            else
-            {
-                // start challenge and roundtrip the return URL and 
-                var props = new AuthenticationProperties()
-                {
-                    RedirectUri = Url.Action("ExternalLoginCallback"),
-                    Items =
-                    {
-                        { "returnUrl", returnUrl },
-                        { "scheme", provider },
-                    }
-                };
-                return Challenge(props, provider);
-            }
         }
 
         /// <summary>
@@ -175,33 +157,22 @@ namespace IdentityServer.Quickstart.UI
         {
             // read external identity from the temporary cookie
             var result = await HttpContext.AuthenticateAsync(IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme);
+            //send user back to login page if automatic login fails 
             if (result?.Succeeded != true)
             {
-                throw new Exception("External authentication error");
+                return RedirectToAction("LoginPage", new { returnUrl = result.Properties.Items["returnUrl"] });
             }
+            string provider = result.Properties.Items["scheme"];
+            string userId = result.Principal.FindFirstValue(JwtClaimTypes.Subject);
+            string userName = result.Principal.FindFirstValue(JwtClaimTypes.Name);
 
-            // lookup our user and external provider info
-            var (user, provider, providerUserId, claims) = FindUserFromExternalProvider(result);
-            if (user == null)
-            {
-                // this might be where you might initiate a custom workflow for user registration
-                // in this sample we don't show how that would be done, as our sample implementation
-                // simply auto-provisions new external user
-                user = AutoProvisionUser(provider, providerUserId, claims);
-            }
-
-            // this allows us to collect any additonal claims or properties
-            // for the specific prtotocols used and store them in the local auth cookie.
-            // this is typically used to store data needed for signout from those protocols.
             var additionalLocalClaims = new List<Claim>();
             var localSignInProps = new AuthenticationProperties();
             ProcessLoginCallbackForOidc(result, additionalLocalClaims, localSignInProps);
-            ProcessLoginCallbackForWsFed(result, additionalLocalClaims, localSignInProps);
-            ProcessLoginCallbackForSaml2p(result, additionalLocalClaims, localSignInProps);
 
             // issue authentication cookie for user
-            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.SubjectId, user.Username));
-            await HttpContext.SignInAsync(user.SubjectId, user.Username, provider, localSignInProps, additionalLocalClaims.ToArray());
+            await _events.RaiseAsync(new UserLoginSuccessEvent(provider, userId, userId, userName));
+            await HttpContext.SignInAsync(userId, userName, provider, localSignInProps, additionalLocalClaims.ToArray());
 
             // delete temporary cookie used during external authentication
             await HttpContext.SignOutAsync(IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme);
@@ -401,7 +372,7 @@ namespace IdentityServer.Quickstart.UI
             if (result?.Principal is WindowsPrincipal wp)
             {
                 // we will issue the external cookie and then redirect the
-                // user back to the external callback, in essence, tresting windows
+                // user back to the external callback, in essence, trusting windows
                 // auth the same as any other external authentication mechanism
                 var props = new AuthenticationProperties()
                 {
@@ -436,6 +407,7 @@ namespace IdentityServer.Quickstart.UI
             }
         }
 
+        //todo remove?
         private (TestUser user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
@@ -482,14 +454,6 @@ namespace IdentityServer.Quickstart.UI
             {
                 localSignInProps.StoreTokens(new[] { new AuthenticationToken { Name = "id_token", Value = id_token } });
             }
-        }
-
-        private void ProcessLoginCallbackForWsFed(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
-        {
-        }
-
-        private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
-        {
         }
     }
 }
