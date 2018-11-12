@@ -1,7 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdentityServer4.Test;
-using IdentityServer.DAL.Models;
+using IdentityServer.Models;
 using IdentityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,7 +23,7 @@ namespace IdentityServer.ProfileServices
         /// </summary>
         protected readonly ILogger Logger;
         private readonly IUserStore UserStore;
-        private readonly IdentityServerContext _DataContext;
+        private readonly DAL.Models.IdentityServerContext _DataContext;
 
         #endregion
         #region Properties
@@ -35,7 +34,7 @@ namespace IdentityServer.ProfileServices
         /// Initializes a new instance of the <see cref="DefaultProfileService"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        public ActiveDirectoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore, IdentityServerContext dataContext)
+        public ActiveDirectoryProfileService(ILogger<DefaultProfileService> logger, IUserStore userStore, DAL.Models.IdentityServerContext dataContext)
         {
             Logger = logger;
             UserStore = userStore;
@@ -108,7 +107,7 @@ namespace IdentityServer.ProfileServices
         /// </summary>
         /// <param name="principal"></param>
         /// <returns></returns>
-        private TestUser GetActiveDirectoryUser(ClaimsPrincipal principal)
+        private User GetActiveDirectoryUser(ClaimsPrincipal principal)
         {
             return UserStore.FindBySubjectId(principal.Claims.FirstOrDefault(x => x.Type == "sub").Value);
         }

@@ -1,6 +1,6 @@
-﻿using IdentityServer4;
+﻿using IdentityServer.Models;
+using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
 using System.Collections.Generic;
 using System.Security.Claims;
 
@@ -22,8 +22,8 @@ namespace IdentityServer
 
             return new List<IdentityResource>
             {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityServer4.Models.IdentityResources.OpenId(),
+                new IdentityServer4.Models.IdentityResources.Profile(),
                 customProfile1,
                 customProfile2
             };
@@ -94,11 +94,11 @@ namespace IdentityServer
             };
         }
 
-        public static List<TestUser> GetUsers()
+        public static List<User> GetUsers()
         {
-            return new List<TestUser>
+            return new List<User>
             {
-                new TestUser
+                new User
                 {
                     SubjectId = "1",
                     Username = "alice",
@@ -110,7 +110,7 @@ namespace IdentityServer
                         new Claim("website", "https://alice.com")
                     }
                 },
-                new TestUser
+                new User
                 {
                     SubjectId = "2",
                     Username = "bob",

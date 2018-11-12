@@ -11,9 +11,9 @@ namespace IdentityServer.Models
 {
     public class TestUsers
     {
-        public static List<TestUser> Users = new List<TestUser>
+        public static List<User> Users = new List<User>
         {
-            new TestUser{SubjectId = "818727", Username = "alice", Password = "alice", 
+            new User{SubjectId = "818727", Username = "alice", Password = "alice", 
                 Claims = 
                 {                    
                     new Claim(JwtClaimTypes.Name, "Alice Smith"),
@@ -26,7 +26,7 @@ namespace IdentityServer.Models
                     new Claim("foo","foo")
                 }
             },
-            new TestUser{SubjectId = "88421113", Username = "bob", Password = "bob", 
+            new User{SubjectId = "88421113", Username = "bob", Password = "bob", 
                 Claims = 
                 {
                     new Claim(JwtClaimTypes.Name, "Bob Smith"),
@@ -39,7 +39,7 @@ namespace IdentityServer.Models
                     new Claim("location", "somewhere")
                 }
             },
-            new TestUser{SubjectId = "8854632", Username = "arusch", Password = "arusch",
+            new User{SubjectId = "8854632", Username = "arusch", Password = "arusch",
                 Claims =
                 {
                     new Claim(JwtClaimTypes.Name, "Adam Rusch"),

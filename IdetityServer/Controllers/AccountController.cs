@@ -5,7 +5,6 @@
 using IdentityModel;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -387,7 +386,7 @@ namespace IdentityServer.Controllers
                 };
 
                 string username = wp.Identity.Name.Split(new Char[] {'\\'}).LastOrDefault();
-                TestUser user = _users.FindByUsername(username);
+                User user = _users.FindByUsername(username);
 
 
                 var id = new ClaimsIdentity(AccountOptions.WindowsAuthenticationSchemeName);
@@ -410,7 +409,7 @@ namespace IdentityServer.Controllers
         }
 
         //todo remove?
-        private (TestUser user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
+        private (User user, string provider, string providerUserId, IEnumerable<Claim> claims) FindUserFromExternalProvider(AuthenticateResult result)
         {
             var externalUser = result.Principal;
 
@@ -434,7 +433,7 @@ namespace IdentityServer.Controllers
             return (user, provider, providerUserId, claims);
         }
 
-        private TestUser AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
+        private User AutoProvisionUser(string provider, string providerUserId, IEnumerable<Claim> claims)
         {
             var user = _users.AutoProvisionUser(provider, providerUserId, claims.ToList());
             return user;

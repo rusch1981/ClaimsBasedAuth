@@ -13,7 +13,7 @@ namespace IdentityServer.UserStores
 {
     public class InMemoryUserStore : IUserStore 
     {
-        private readonly List<TestUser> _users;
+        private readonly List<User> _users;
 
         private StringBuilder _ErrorMessage;
 
@@ -39,7 +39,7 @@ namespace IdentityServer.UserStores
         /// </summary>
         public InMemoryUserStore()
         {
-            _users = new List<TestUser>(TestUsers.Users);
+            _users = new List<User>(TestUsers.Users);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace IdentityServer.UserStores
         /// </summary>
         /// <param name="subjectId">The subject identifier.</param>
         /// <returns></returns>
-        public TestUser FindBySubjectId(string subjectId)
+        public User FindBySubjectId(string subjectId)
         {
             return _users.FirstOrDefault(x => x.SubjectId == subjectId);
         }
@@ -75,7 +75,7 @@ namespace IdentityServer.UserStores
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
-        public TestUser FindByUsername(string username)
+        public User FindByUsername(string username)
         {
             return _users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
@@ -86,7 +86,7 @@ namespace IdentityServer.UserStores
         /// <param name="provider">The provider.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public TestUser FindByExternalProvider(string provider, string userId)
+        public User FindByExternalProvider(string provider, string userId)
         {
             return _users.FirstOrDefault(x =>
                 x.ProviderName == provider &&
@@ -100,7 +100,7 @@ namespace IdentityServer.UserStores
         /// <param name="userId">The user identifier.</param>
         /// <param name="claims">The claims.</param>
         /// <returns></returns>
-        public TestUser AutoProvisionUser(string provider, string userId, List<Claim> claims)
+        public User AutoProvisionUser(string provider, string userId, List<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
@@ -150,7 +150,7 @@ namespace IdentityServer.UserStores
             var name = filtered.FirstOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value ?? sub;
 
             // create new user
-            var user = new TestUser
+            var user = new User
             {
                 SubjectId = sub,
                 Username = name,

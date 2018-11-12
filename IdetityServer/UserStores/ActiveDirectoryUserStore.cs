@@ -1,6 +1,6 @@
 ﻿using IdentityModel;
 using IdentityServer4.Test;
-using IdentityServer.DAL.Models;
+using IdentityServer.Models;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,8 +17,8 @@ namespace IdentityServer.UserStores
         #endregion
         #region Fields
 
-        private readonly List<TestUser> _users;
-        private readonly IdentityServerContext _dataContext;
+        private readonly List<User> _users;
+        private readonly DAL.Models.IdentityServerContext _dataContext;
         private readonly StringBuilder _errorMessage;
 
         #endregion
@@ -49,9 +49,9 @@ namespace IdentityServer.UserStores
         /// Initializes a new instance of the <see cref="TestUserStore"/> class.
         /// </summary>
         /// <param name="users">The users.</param>
-        public ActiveDirectoryUserStore(IdentityServerContext dataContext)
+        public ActiveDirectoryUserStore(DAL.Models.IdentityServerContext dataContext)
         {
-            _users = new List<TestUser>();
+            _users = new List<User>();
             _dataContext = dataContext;
             _errorMessage = new StringBuilder();
         }
@@ -95,19 +95,18 @@ namespace IdentityServer.UserStores
         /// </summary>
         /// <param name="subjectId">The subject identifier.</param>
         /// <returns></returns>
-        public TestUser FindBySubjectId(string subjectId)
+        public User FindBySubjectId(string subjectId)
         {
             using (PrincipalContext domainContext = new PrincipalContext(ContextType.Domain))
             {
                 using (UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, IdentityType.Sid, (subjectId)))
                 {
+                    User newUser = new User();
+                    newUser.SubjectId = user.Sid.ToString();
+                    newUser.Username = user.SamAccountName;
+                    newUser.Claims = new List<Claim> { new Claim(JwtClaimTypes.Name, user.DisplayName) };
 
-                    return new TestUser
-                    {
-                        SubjectId = user.Sid.ToString(),
-                        Username = user.SamAccountName,
-                        Claims = { new Claim(JwtClaimTypes.Name, user.DisplayName) }
-                    };
+                    return newUser;
                 }
             }
         }
@@ -117,19 +116,19 @@ namespace IdentityServer.UserStores
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
-        public TestUser FindByUsername(string username)
+        public User FindByUsername(string username)
         {
             using (PrincipalContext domainContext = new PrincipalContext(ContextType.Domain))
             {
                 //Create a "user object" in the context
                 using (UserPrincipal user = UserPrincipal.FindByIdentity(domainContext, username))
                 {
-                    return new TestUser
-                    {
-                        SubjectId = user.Sid.ToString(),
-                        Username = user.SamAccountName,
-                        Claims = {  new Claim(JwtClaimTypes.Name, user.DisplayName) }
-                    };
+                    User newUser = new User();
+                    newUser.SubjectId = user.Sid.ToString();
+                    newUser.Username = user.SamAccountName;
+                    newUser.Claims = new List<Claim>{ new Claim(JwtClaimTypes.Name, user.DisplayName) };
+
+                    return newUser;
                 }
             }
         }
@@ -140,7 +139,7 @@ namespace IdentityServer.UserStores
         /// <param name="provider">The provider.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        public TestUser FindByExternalProvider(string provider, string userId)
+        public User FindByExternalProvider(string provider, string userId)
         {
             return _users.FirstOrDefault(x =>
                 x.ProviderName == provider &&
@@ -154,7 +153,7 @@ namespace IdentityServer.UserStores
         /// <param name="userId">The user identifier.</param>
         /// <param name="claims">The claims.</param>
         /// <returns></returns>
-        public TestUser AutoProvisionUser(string provider, string userId, List<Claim> claims)
+        public User AutoProvisionUser(string provider, string userId, List<Claim> claims)
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
@@ -204,7 +203,7 @@ namespace IdentityServer.UserStores
             var name = filtered.FirstOrDefault(c => c.Type == JwtClaimTypes.Name)?.Value ?? sub;
 
             // create new user
-            var user = new TestUser
+            var user = new User
             {
                 SubjectId = sub,
                 Username = name,
