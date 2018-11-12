@@ -134,7 +134,6 @@ namespace IdetityServer.UserStores
             }
         }
 
-        //todo clean up unneeded code
         /// <summary>
         /// Finds the user by external provider.
         /// </summary>

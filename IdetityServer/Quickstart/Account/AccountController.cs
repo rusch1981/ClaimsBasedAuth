@@ -413,18 +413,13 @@ namespace IdentityServer.Quickstart.UI
                     }
                 };
 
-                var id = new ClaimsIdentity(AccountOptions.WindowsAuthenticationSchemeName);
-                id.AddClaim(new Claim(JwtClaimTypes.Subject, wp.Identity.Name));
-                id.AddClaim(new Claim(JwtClaimTypes.Name, wp.Identity.Name));
+                string username = wp.Identity.Name.Split(new Char[] {'\\'}).LastOrDefault();
+                TestUser user = _users.FindByUsername(username);
 
-                // add the groups as claims -- be careful if the number of groups is too large
-                if (AccountOptions.IncludeWindowsGroups)
-                {
-                    var wi = wp.Identity as WindowsIdentity;
-                    var groups = wi.Groups.Translate(typeof(NTAccount));
-                    var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
-                    id.AddClaims(roles);
-                }
+
+                var id = new ClaimsIdentity(AccountOptions.WindowsAuthenticationSchemeName);
+                id.AddClaim(new Claim(JwtClaimTypes.Subject, user.SubjectId));
+                id.AddClaim(new Claim(JwtClaimTypes.Name, user.Username));
 
                 await HttpContext.SignInAsync(
                     IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme,
@@ -459,8 +454,8 @@ namespace IdentityServer.Quickstart.UI
             var provider = result.Properties.Items["scheme"];
             var providerUserId = userIdClaim.Value;
 
-            // find external user
-            var user = _users.FindByExternalProvider(provider, providerUserId);
+            // find user
+            var user = _users.FindByUsername(userIdClaim.Value);
 
             return (user, provider, providerUserId, claims);
         }
