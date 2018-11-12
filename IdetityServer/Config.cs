@@ -4,7 +4,7 @@ using IdentityServer4.Test;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace IdetityServer
+namespace IdentityServer
 {
     public class Config
     {// scopes define the resources in your system

@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
-using IdetityServer.UserStores;
+using IdentityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace IdetityServer.ProfileServices
+namespace IdentityServer.ProfileServices
 {
     public class InMemoryProfileService : IProfileService
     {

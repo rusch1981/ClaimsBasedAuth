@@ -1,8 +1,8 @@
 ﻿using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Test;
-using IdetityServer.Models;
-using IdetityServer.UserStores;
+using IdentityServer.Models;
+using IdentityServer.UserStores;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IdetityServer.ProfileServices
+namespace IdentityServer.ProfileServices
 {
     public class ActiveDirectoryProfileService : IProfileService
     {

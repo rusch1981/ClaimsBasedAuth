@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc5Auth", "Mvc5Auth\Mvc5Auth.csproj", "{45D019ED-3821-4755-A9FB-380599DA0091}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdetityServer", "IdetityServer\IdetityServer.csproj", "{12B18E53-3D5D-4873-80DB-0BDF792F6185}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdetityServer\IdentityServer.csproj", "{12B18E53-3D5D-4873-80DB-0BDF792F6185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVC_Client", "MVC_Client\MVC_Client.csproj", "{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_Client", "MVC_Client\MVC_Client.csproj", "{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

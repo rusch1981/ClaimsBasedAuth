@@ -4,7 +4,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace IdetityServer
+namespace IdentityServer
 {
     public class Program
     {

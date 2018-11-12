@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace IdetityServer.UserStores
+namespace IdentityServer.UserStores
 {
     public class InMemoryUserStore : IUserStore 
     {

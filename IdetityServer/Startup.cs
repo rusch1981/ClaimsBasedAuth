@@ -2,16 +2,16 @@
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
-using IdetityServer.Models;
-using IdetityServer.ProfileServices;
-using IdetityServer.UserStores;
+using IdentityServer.Models;
+using IdentityServer.ProfileServices;
+using IdentityServer.UserStores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IdetityServer
+namespace IdentityServer
 {
     public class Startup
     {

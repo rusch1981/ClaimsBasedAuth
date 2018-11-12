@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IdetityServer.Models
+namespace IdentityServer.Models
 {
     public partial class ClientProperties
     {

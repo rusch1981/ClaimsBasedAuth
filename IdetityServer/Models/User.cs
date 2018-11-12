@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace IdetityServer.Models
+namespace IdentityServer.Models
 {
     public class User
     {

@@ -1,7 +1,7 @@
 ﻿using IdentityServer4.Test;
 using System.Security.Claims;
 
-namespace IdetityServer.UserStores
+namespace IdentityServer.UserStores
 {
     public interface IUserStore
     {
