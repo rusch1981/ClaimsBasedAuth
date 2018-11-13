@@ -1,7 +1,11 @@
 # ClaimsBasedAuth
-The below examples are from the turorials listed below.  For detailed info refer to Microsoft 
-Documentation 
-[here](https://docs.microsoft.com/en-us/dotnet/framework/security/)
+### ActiveDirectoryTest
+Active directory example including:
+* Validation of a User against the Domain
+* Retrieval of specific user
+* Retrieval and setting of Current User.  
+* Query Domain Users 
+* 
 ### Authentication Project
 Claims Based Security .Net4.5.  The majority of the code is from 
 [here](https://dotnetcodr.com/2013/02/14/introduction-to-claims-based-security-in-net4-5-with-c-part-2-the-new-inheritance-model/) 
@@ -35,10 +39,13 @@ for performing registration and authentication.
 
 #### Server
 
+Currently configured to automatically authenticate users using Windows Authentication.  If Windows authentication fails the user is the prompted 
+to login (active directory) or re-attempt automatic login via the "Windows Authentication" shown on the screen.  
+
 ##### Running for the First Time
 * Clone this repo.
 * Uncomment the InitializeDatabase() method call in Startup.Configure()
-* Update the "IdentityServerDatabase" Connection String in the appsetting.json file
+* Update the "IdentityServerDatabase" Connection String in the appsetting.json file (use the database name "IdentityServer")
 * Run the project in visual studio as a local project (the database should now be created using TestUsers.cs)
 * Comment out InitializeDatabase()
 * Run the table creation Scripts from IdSrvUserTearDownSetUp.sql
@@ -49,12 +56,16 @@ See **Users and UserStores** beloe for additinal information on user configurati
 
 ##### Initial Setup Notes:
 
+Full Tutorial can be found [here.](http://docs.identityserver.io/en/release/quickstarts/8_entity_framework.html)
+
 Created from an Empty Core 2.1 Webapp
 
-Installed: IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
+Install: IdentityServer4, IdentityServer4.EntityFramework, Microsoft.EntityFrameworkCore.Tools.DotNet,
 Microsoft.Extensions.Configuration, and System.DirectoryServices.AccountManagement.
 
-Logging installed:  Serilog.AspNetCore, Serilog.Sinks.Console, and Serilog.Sinks.File 
+Logging install:  Serilog.AspNetCore, Serilog.Sinks.Console, and Serilog.Sinks.File 
+
+Install Entity Framework Core Tools as explained [here.](https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet)
 
 Run below to test Net Entity Framework tooling is istalled.  
 ```cmd
@@ -70,7 +81,7 @@ dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c Persi
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
 ```
 
-At this point the Identity Server Database will be created when you run the project.  The sample data is pulled from the 
+At this point the Identity Server Database will be created when you run the project.  The sample data used to populate the database is pulled from the 
 TestUsers.cs file.
 
 Set up user tables and some sample data using the IdSrvUserTearDownSetUp.sql.
@@ -82,6 +93,12 @@ Scaffold-DbContext "Data Source=localhost;database=IdentityServer;trusted_connec
 ***Caution**: by scaffolding the model the dbcontext class autmatically generates\d a connection string that was being used.
 Instead the dbcontext should be injected and passed the connection string via appsettings.json  (see Startup.cs for example).*
 
+##### Logging
+The current configuration is set to log to console and write to log file.  You can configure logging in the Program.cs Main Method.  
+
+##### Enabling CORS
+CORS is enabled per Client Configuration or globaly by implementing ICorsPolicyService.  More information can be found [here.](http://docs.identityserver.io/en/release/topics/cors.html)
+
 ##### Users and UserStores
 IUserStore.cs is used to search, validate, etc. users.  IUserStore is injected in the Startup.cs.  
 The implementation ActiveDirectoryUserStore.cs uses Active Directory.  In order for of ActiveDirectoryUserStore.cs to 
@@ -90,7 +107,7 @@ The Implementation of InMemoryUserStore.cs can be used with out the use of "User
 static users.
 
 *Note - IUserStore must be used in conjunction with correct implementation of IProfileService also
-located in Startup.cs*
+located in Startup.cs.  The current configuration may not work with InMemoryUserStore*
 
 ##### Setting up Users and Client in the Database
 
@@ -121,7 +138,7 @@ public class Program
 }
 ```
  
-### ClientSamples
+### Samples
 
 #### MVC_Client (Core)
 
@@ -135,13 +152,12 @@ and Edit namespace of all files.
 How to configure authentication with Identity Server 4 can be seen in the Startup.cs.   
 
 
-
 [ClaimsTroubleShooting 2.0](https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/)
 and [ClaimsTroubleShooting 2.1](https://leastprivilege.com/2018/06/14/improvements-in-claim-mapping-in-the-asp-net-core-2-1-openid-connect-handler/)
 https://github.com/IdentityServer/IdentityServer4/issues/2213
 
 
-#### MVCClient (Full Framework)
+#### MVCIdentityServer (Full Framework)
 
 Create Empty Full FrameWork Webapp
 

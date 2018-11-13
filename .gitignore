@@ -44,3 +44,6 @@
 /MVC_FrameworkClient/MvcIdentityServer/obj
 /MvcIdentityServer/bin
 /MvcIdentityServer/obj/Debug
+/ActiveDirectoryTest/bin/Debug/netcoreapp2.1
+/ActiveDirectoryTest/obj
+/MvcIdentityServer/obj/Release

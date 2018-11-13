@@ -61,7 +61,7 @@ namespace IdentityServer
 
             //Add scaffolded DbContext Connection String
             services.AddDbContext<IdentityServerContext>(options =>
-            options.UseSqlServer(_config.GetSection("ConnectionsStrings:IdentityServerDatabase").Value)
+            options.UseSqlServer(connectionString)
             );
 
             //TOGGLE IUserStore - works in conjunction with IProfileService
