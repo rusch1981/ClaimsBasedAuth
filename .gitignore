@@ -42,3 +42,5 @@
 /MVC_FrameworkClient/.vs
 /MVC_FrameworkClient/MvcIdentityServer/bin
 /MVC_FrameworkClient/MvcIdentityServer/obj
+/MvcIdentityServer/bin
+/MvcIdentityServer/obj/Debug
