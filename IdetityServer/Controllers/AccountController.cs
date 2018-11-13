@@ -20,6 +20,7 @@ using IdentityServer4.Models;
 using IdentityServer.UserStores;
 using IdentityServer.Models;
 using IdentityServer.Models.Account;
+using Microsoft.Extensions.Configuration;
 
 namespace IdentityServer.Controllers
 {
@@ -36,20 +37,22 @@ namespace IdentityServer.Controllers
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IConfiguration _config;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IUserStore users)
+            IUserStore users,
+            IConfiguration config)
         {
             _users = users;
-
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _config = config;
         }
 
         /// <summary>
@@ -66,7 +69,13 @@ namespace IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+            //if autodetect is set to true we attempt automatice Windows Authentication
+            if(bool.Parse(_config.GetSection("LoginConfiguration:Autodetect").Value))
+            {
                 return await ExternalLogin(returnUrl);
+            }
+
+            return RedirectToAction("LoginPage", new { returnUrl = returnUrl });
         }
 
         /// <summary>
@@ -86,7 +95,7 @@ namespace IdentityServer.Controllers
                     // denied the consent (even if this client does not require consent).
                     // this will send back an access denied OIDC error response to the client.
                     await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
-                    
+
                     // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                     return Redirect(model.ReturnUrl);
                 }
@@ -146,8 +155,8 @@ namespace IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> ExternalLogin(string returnUrl)
         {
-                // windows authentication needs special handling
-                return await ProcessWindowsLoginAsync(returnUrl);
+            // windows authentication needs special handling
+            return await ProcessWindowsLoginAsync(returnUrl);
         }
 
         /// <summary>
@@ -385,7 +394,7 @@ namespace IdentityServer.Controllers
                     }
                 };
 
-                string username = wp.Identity.Name.Split(new Char[] {'\\'}).LastOrDefault();
+                string username = wp.Identity.Name.Split(new Char[] { '\\' }).LastOrDefault();
                 User user = _users.FindByUsername(username);
 
 
@@ -407,7 +416,7 @@ namespace IdentityServer.Controllers
                 return Challenge(AccountOptions.WindowsAuthenticationSchemeName);
             }
         }
-        
+
         private void ProcessLoginCallbackForOidc(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         {
             // if the external system sent a session id claim, copy it over

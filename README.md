@@ -39,7 +39,7 @@ for performing registration and authentication.
 
 #### Server
 
-Currently configured to automatically authenticate users using Windows Authentication.  If Windows authentication fails the user is the prompted 
+Currently configureable to automatically authenticate users using Windows Authentication.  If Windows authentication fails the user is the prompted 
 to login (active directory) or re-attempt automatic login via the "Windows Authentication" shown on the screen.  
 
 ##### Running for the First Time
@@ -93,6 +93,14 @@ Scaffold-DbContext "Data Source=localhost;database=IdentityServer;trusted_connec
 ***Caution**: by scaffolding the model the dbcontext class autmatically generates\d a connection string that was being used.
 Instead the dbcontext should be injected and passed the connection string via appsettings.json  (see Startup.cs for example).*
 
+##### Automatic Windows Authentication Configuration
+To configure Automatic Windows Authentication set 'Autodetect' to 'true'
+``` json
+appsettings.json
+"LoginConfiguration": {
+    "Autodetect" :  "false"
+```
+
 ##### Logging
 The current configuration is set to log to console and write to log file.  You can configure logging in the Program.cs Main Method.  
 
@@ -107,7 +115,8 @@ The Implementation of InMemoryUserStore.cs can be used with out the use of "User
 static users.
 
 *Note - IUserStore must be used in conjunction with correct implementation of IProfileService also
-located in Startup.cs.  The current configuration may not work with InMemoryUserStore*
+located in Startup.cs.  The Automatic Windows Authentication Configuration may not work with 
+InMemoryUserStore*
 
 ##### Setting up Users and Client in the Database
 
