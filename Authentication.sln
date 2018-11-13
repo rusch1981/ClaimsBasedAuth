@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdetitySe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVC_Client", "MVC_Client\MVC_Client.csproj", "{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{457DD442-12A6-4463-8A19-CA67CC277328}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcIdentityServer", "..\IdentityServer4Examples\MvcIdentityServer\MvcIdentityServer\MvcIdentityServer.csproj", "{00A15042-ED7F-49C9-A256-AC87CFAE331D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,17 @@ Global
 		{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A15042-ED7F-49C9-A256-AC87CFAE331D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A15042-ED7F-49C9-A256-AC87CFAE331D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A15042-ED7F-49C9-A256-AC87CFAE331D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A15042-ED7F-49C9-A256-AC87CFAE331D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A7A6F2C3-E11B-42EC-83DB-4DD9042097BA} = {457DD442-12A6-4463-8A19-CA67CC277328}
+		{00A15042-ED7F-49C9-A256-AC87CFAE331D} = {457DD442-12A6-4463-8A19-CA67CC277328}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30DFADA5-0321-47AE-9F31-10970F3FFE09}

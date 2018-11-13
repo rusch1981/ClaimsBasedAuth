@@ -39,3 +39,6 @@
 /MVC_Client/obj
 /IdetityServer/bin/IISSupport
 /IdetityServer/Logs
+/MVC_FrameworkClient/.vs
+/MVC_FrameworkClient/MvcIdentityServer/bin
+/MVC_FrameworkClient/MvcIdentityServer/obj
