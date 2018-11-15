@@ -47,7 +47,7 @@ to login (active directory) or re-attempt automatic login via the "Windows Authe
 * Uncomment the InitializeDatabase() method call in Startup.Configure()
 * Update the "IdentityServerDatabase" Connection String in the appsetting.json file
 * Restore the database using the scripts/IdentityServer.bak
-* Run Create... and Set... scripts from the scripts folder
+* Run Create... and Set... stored procedures (also found in the scripts directory)
 
 You should now be able to browse to the discovery document and test the server login using the MVC_Client project. 
 See **Users and UserStores** below for additional information on user configuration.  
