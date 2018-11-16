@@ -1,7 +1,7 @@
 USE [IdentityServer]
 GO
 
-/****** Object:  StoredProcedure [dbo].[CreateUser]    Script Date: 11/15/2018 10:18:10 AM ******/
+/****** Object:  StoredProcedure [dbo].[CreateUser]    Script Date: 11/15/2018 11:52:57 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,23 +10,19 @@ GO
 
 
 CREATE PROCEDURE [dbo].[CreateUser]
-	@UserName NVARCHAR(50),
-	@ClientID INT,
-	@UserRoleId INT
-	
+	@INPUT_UserName NVARCHAR(50),
+	@INPUT_Description NVARCHAR(MAX) = NULL
 AS
 
 /*LOG
 11.15.2018 - ARR - INITIAL CREATION
 */
 
-INSERT INTO Users (UserName)
-  VALUES (@UserName)
+IF EXISTS (SELECT * FROM Users WHERE UserName = @INPUT_UserName)
+	PRINT N'THE USER NAME (' + @INPUT_UserName +') HAS ALREADY BEEN CREATED';
+ELSE
 
-DECLARE @UserID INT;
+INSERT INTO Users (UserName, Description)
+  VALUES (@INPUT_UserName, @INPUT_Description)
 
-SET @UserID = (SELECT TOP 1 Id FROM Users WHERE UserName = @UserName)
-
-INSERT INTO UsersClientsRoles (UserId, ClientId, UserRoleId)
-  VALUES (@UserID, @ClientID, @UserRoleId)
 GO
