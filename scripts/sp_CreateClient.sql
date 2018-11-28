@@ -26,7 +26,7 @@ DECLARE
 	@LogoUri NVARCHAR(2000) = NULL,
 	@RequireConsent BIT = 1,
 	@AllowRememberConsent BIT = 1,
-	@AlwaysIncludeUserClaimsInIdToken BIT = 0, 
+	@AlwaysIncludeUserClaimsInIdToken BIT = 1, 
 	@RequirePkce BIT = 0, 
 	@AllowPlainTextPkce BIT = 0, 
 	@AllowAccessTokensViaBrowser BIT = 0, 

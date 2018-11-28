@@ -32,7 +32,7 @@ namespace MVC_Client
                     options.RequireHttpsMetadata = false;
 
                     //Client specific information 
-                    options.ClientId = "mvc";
+                    options.ClientId = "mvc1";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code id_token";
 
@@ -42,14 +42,11 @@ namespace MVC_Client
                     //add scopes to request.  openid must be requested.
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
-                    options.Scope.Add("customProfile1");
-                    options.Scope.Add("customProfile2");
+                    options.Scope.Add("role");
 
                     //Map of specific claims.  Only a few are mapped automatically.  Map all that you need to be sure.
                     options.ClaimActions.MapUniqueJsonKey("sub", "sub");
                     options.ClaimActions.MapUniqueJsonKey("name", "name");
-                    options.ClaimActions.MapUniqueJsonKey("foo", "foo");
-                    options.ClaimActions.MapUniqueJsonKey("website", "website");
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
 
                     options.SaveTokens = true;
