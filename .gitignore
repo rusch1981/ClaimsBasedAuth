@@ -47,3 +47,5 @@
 /ActiveDirectoryTest/bin/Debug/netcoreapp2.1
 /ActiveDirectoryTest/obj
 /MvcIdentityServer/obj/Release
+/FormsAuthFFClient/bin
+/FormsAuthFFClient/obj
