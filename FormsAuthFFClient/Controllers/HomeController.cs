@@ -14,8 +14,16 @@ namespace FormsAuthFFClient.Controllers
             return View();
         }
 
+        [Route("Home/About")]
         [Authorize]
         public ActionResult About()
+        {
+            return View();
+        }
+
+        [Route("Home1/Contacts")]
+        [Authorize]
+        public ActionResult Contacts()
         {
             return View();
         }

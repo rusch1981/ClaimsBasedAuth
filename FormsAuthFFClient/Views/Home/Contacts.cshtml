@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Contacts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Contacts</h2>
+
+This is protected
+
+@using (Html.BeginForm("LogOff", "Account"))
+{
+    @Html.AntiForgeryToken()
+    <input type="submit" value="LogOff" />
+}

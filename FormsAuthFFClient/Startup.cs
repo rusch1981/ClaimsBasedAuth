@@ -17,7 +17,7 @@ namespace FormsAuthFFClient
         {
             System.Web.Helpers.AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Sid;
 
-            app.Use(typeof(CustomMiddleware1), app);
+            app.Use(typeof(CustomMiddleware2), app);
 
             //app.UseCookieAuthentication(new CookieAuthenticationOptions
             //{
@@ -28,18 +28,20 @@ namespace FormsAuthFFClient
         }
     }
 
-    public class CustomMiddleware1 : OwinMiddleware
+    public class CustomMiddleware2 : OwinMiddleware
     {
         private readonly IAppBuilder _appBuilder;
 
-        public CustomMiddleware1(OwinMiddleware next, IAppBuilder appBuilder) : base(next)
+        public CustomMiddleware2(OwinMiddleware next, IAppBuilder appBuilder) : base(next)
         {
             _appBuilder = appBuilder;
         }
 
         public async override Task Invoke(IOwinContext context)
         {
-            if(context.Request.Uri.ToString().Contains("49820"))
+            var isRoute1 = context.Request.Uri.ToString().Contains("Home1");
+
+            if (isRoute1)
             {
                 var authMiddleware1 = new CookieAuthenticationMiddleware(Next, _appBuilder, new CookieAuthenticationOptions
                 {
@@ -48,11 +50,23 @@ namespace FormsAuthFFClient
                     CookieSecure = CookieSecureOption.SameAsRequest
                 });
 
-                context.Response.Write("<h1>PreCustomMiddleware1</h1>");
+                context.Response.Write("<h1>PreCustomMiddleware Meesage 1</h1>");
                 await authMiddleware1.Invoke(context);
-                context.Response.Write("<h1>PostCustomMiddleware1</h1>");
+                context.Response.Write("<h1>PostCustomMiddleware Meesage 1</h1>");
             }
-            
+            else
+            {
+                var authMiddleware1 = new CookieAuthenticationMiddleware(Next, _appBuilder, new CookieAuthenticationOptions
+                {
+                    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                    LoginPath = new PathString("/Account/Login"),
+                    CookieSecure = CookieSecureOption.SameAsRequest
+                });
+
+                context.Response.Write("<h1>PreCustomMiddleware Meesage 2</h1>");
+                await authMiddleware1.Invoke(context);
+                context.Response.Write("<h1>PostCustomMiddleware Meesage 2</h1>");
+            }
         }
     }
 }
