@@ -2,9 +2,7 @@
 using FormsAuthFFClient.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +11,14 @@ namespace FormsAuthFFClient.Controllers
 {
     public class AccountController : Controller
     {
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
+
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -22,7 +28,6 @@ namespace FormsAuthFFClient.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -34,9 +39,6 @@ namespace FormsAuthFFClient.Controllers
             {
                 if (true) //Check the database
                 {
-
-
-
                     List<Claim> claims = GetClaims("General"); //Get the claims from the headers or db or your user store
                     if (null != claims)
                     {
@@ -199,21 +201,8 @@ namespace FormsAuthFFClient.Controllers
 
 
             HttpContext.User = new DemoPrincipal(AuthenticationManager.AuthenticationResponseGrant.Principal);
+        }        
 
-
-
-        }
-
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
-        //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]

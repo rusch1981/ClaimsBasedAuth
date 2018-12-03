@@ -1,6 +1,4 @@
 ﻿using Microsoft.Owin.Security;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
@@ -11,6 +9,15 @@ namespace FormsAuthFFClient.Filters
     public class CustomAuthAttribute : AuthorizeAttribute
     {
         public string AuthArea { get; set; }
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.Current.GetOwinContext().Authentication;
+            }
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var uri = HttpContext.Current.Request.Url.ToString().ToLower();
@@ -60,14 +67,6 @@ namespace FormsAuthFFClient.Filters
             }
             //Will never happen
             return false;
-        }
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.Current.GetOwinContext().Authentication;
-            }
         }
     }
 }

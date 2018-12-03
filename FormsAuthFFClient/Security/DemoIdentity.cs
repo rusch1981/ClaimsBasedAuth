@@ -8,10 +8,10 @@ namespace FormsAuthFFClient.Security
 {
     public class DemoIdentity : ClaimsIdentity
     {
-        public const string RolesClaimType = "http://www.assilabdulrahim.com/CuttingEdge.Security.Role";
-        public const string GroupClaimType = "http://www.assilabdulrahim.com/CuttingEdge.Security.Group";
-        public const string IPClaimType = "http://www.assilabdulrahim.com/CuttingEdge.Security.IP";
-        public const string IdClaimType = "http://www.assilabdulrahim.com/CuttingEdge.Security.Id";
+        public const string RolesClaimType = "Role";
+        public const string GroupClaimType = "Group";
+        public const string IPClaimType = "Security.IP";
+        public const string IdClaimType = "Security.Id";
 
 
         public DemoIdentity(IEnumerable<Claim> claims, string authenticationType)

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims;
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -35,11 +38,18 @@
         @RenderBody()
         @if (User.Identity.IsAuthenticated)
         {
-            <h2> @User.Identity.Name Is Authenticated </h2>
-            using (Html.BeginForm("LogOff", "Account", new { area =""}))
+            var identity = User.Identity as ClaimsIdentity;
+
+            <h2> @identity.Name Is Authenticated and has @identity.Claims.Count() Claims</h2>
+            using (Html.BeginForm("LogOff", "Account", new { area = "" }))
             {
                 @Html.AntiForgeryToken()
                 <input type="submit" value="LogOff" />
+            }
+
+            foreach(var claim in identity.Claims)
+            {
+                <li>@claim.Type : @claim.Value</li>
             }
         }
 

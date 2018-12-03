@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Helpers;
@@ -7,11 +6,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using IdentityServer3.Core;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.Owin.Security;
 using System.Web;
+using System;
+using System.IO;
 
 [assembly: OwinStartup(typeof(FormsAuthFFClient.Startup))]
 
@@ -29,6 +29,7 @@ namespace FormsAuthFFClient
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                //This cannot be removed even though redirection is being handled by the Provider Property below.
                 LoginPath = new PathString("/Account/Login"),
                 CookieSecure = CookieSecureOption.SameAsRequest,
                 //test
@@ -39,20 +40,28 @@ namespace FormsAuthFFClient
 
         private void OnApplyRedirect(CookieApplyRedirectContext context)
         {
-            var url = HttpContext.Current.Request.Url.AbsoluteUri;
-            var areaRedirect = $"?returnUrl={url}/Index";
+            var url = HttpContext.Current.Request.Url;
+            var areaRedirect = $"?returnUrl={url.AbsoluteUri}/Index";
 
             string redirectUrl = "/Account/login" + areaRedirect.ToLower().Replace("/about", "");
-            if (url.ToLower().Contains("/area1/"))
+            if (RedirectHelpers.IsArea(url,"area1"))
             {
                 redirectUrl = "/Account/loginArea1" + areaRedirect;
             }
-            else if (url.ToLower().Contains("/area2/"))
+            else if (RedirectHelpers.IsArea(url,"area2"))
             {
                 redirectUrl = "/Account/LoginArea2" + areaRedirect;
             }
 
             context.Response.Redirect(redirectUrl);
+        }
+    }
+
+    public class RedirectHelpers
+    {
+        public static bool IsArea(Uri uri, string area)
+        {
+            return area.Equals(uri.AbsolutePath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries)[0], StringComparison.InvariantCultureIgnoreCase);
         }
     }
 
