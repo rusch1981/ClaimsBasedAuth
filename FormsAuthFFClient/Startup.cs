@@ -96,7 +96,6 @@ namespace FormsAuthFFClient
                     }
                 });
 
-                //Probably need to wrap the above in a class to make Next public
                 var cookieAuthenticationMiddleware = new CookieAuthenticationMiddleware(openIdConnectMiddleware.NextWrapper, _appBuilder, new CookieAuthenticationOptions
                 {
                     AuthenticationType = "Cookies"
