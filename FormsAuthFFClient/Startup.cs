@@ -11,6 +11,7 @@ using IdentityServer3.Core;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.Owin.Security;
+using System.Web;
 
 [assembly: OwinStartup(typeof(FormsAuthFFClient.Startup))]
 
@@ -21,19 +22,43 @@ namespace FormsAuthFFClient
         public void Configuration(IAppBuilder app)
         {           
 
-            app.Use(typeof(CustomMiddleware2), app);
+            //app.Use(typeof(CustomMiddleware2), app);
 
-            //System.Web.Helpers.AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Sid;
+            System.Web.Helpers.AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Sid;
 
-            //app.UseCookieAuthentication(new CookieAuthenticationOptions
-            //{
-            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    LoginPath = new PathString("/Account/Login"),
-            //    CookieSecure = CookieSecureOption.SameAsRequest
-            //});
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Account/Login"),
+                CookieSecure = CookieSecureOption.SameAsRequest,
+                //test
+                Provider = new CookieAuthenticationProvider { OnApplyRedirect = OnApplyRedirect },
+                
+            });
+        }
+
+        private void OnApplyRedirect(CookieApplyRedirectContext context)
+        {
+            var url = HttpContext.Current.Request.Url.AbsoluteUri;
+            var areaRedirect = $"?returnUrl={url}/Index";
+
+            string redirectUrl = "/Account/login" + areaRedirect.ToLower().Replace("/about", "");
+            if (url.ToLower().Contains("/area1/"))
+            {
+                redirectUrl = "/Account/loginArea1" + areaRedirect;
+            }
+            else if (url.ToLower().Contains("/area2/"))
+            {
+                redirectUrl = "/Account/LoginArea2" + areaRedirect;
+            }
+
+            context.Response.Redirect(redirectUrl);
         }
     }
 
+    /// <summary>
+    /// this is not working correctly.  Possibly due to sending back the request back with HTML?  Who knows man?
+    /// </summary>
     public class CustomMiddleware2 : OwinMiddleware
     {
         private readonly IAppBuilder _appBuilder;

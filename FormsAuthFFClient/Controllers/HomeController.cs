@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FormsAuthFFClient.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +16,7 @@ namespace FormsAuthFFClient.Controllers
         }
 
         [Route("Home/About")]
-        [Authorize]
+        [CustomAuthAttribute(AuthArea = "/about")]
         public ActionResult About()
         {
             return View();
@@ -24,6 +25,11 @@ namespace FormsAuthFFClient.Controllers
         [Route("Home1/Contacts")]
         [Authorize]
         public ActionResult Contacts()
+        {
+            return View();
+        }
+
+        public ActionResult Redirect()
         {
             return View();
         }

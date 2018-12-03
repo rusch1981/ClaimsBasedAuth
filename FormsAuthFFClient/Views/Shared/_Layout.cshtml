@@ -21,9 +21,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacts", "Contacts", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Contacts", "Contacts", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Area1", "Index", "Area1", new { area = "Area1" }, null)</li>
+                    <li>@Html.ActionLink("Area2", "Index", "Area2", new { area = "Area2" }, null)</li>
                 </ul>
             </div>
         </div>
@@ -31,6 +33,16 @@
 
     <div class="container body-content">
         @RenderBody()
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h2> @User.Identity.Name Is Authenticated </h2>
+            using (Html.BeginForm("LogOff", "Account", new { area =""}))
+            {
+                @Html.AntiForgeryToken()
+                <input type="submit" value="LogOff" />
+            }
+        }
+
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>

@@ -37,12 +37,12 @@ namespace FormsAuthFFClient.Controllers
 
 
 
-                    List<Claim> claims = GetClaims(); //Get the claims from the headers or db or your user store
+                    List<Claim> claims = GetClaims("General"); //Get the claims from the headers or db or your user store
                     if (null != claims)
                     {
                         SignIn(claims);
 
-                        return RedirectToLocal(returnUrl);
+                        return Redirect(returnUrl);
                     }
 
 
@@ -66,9 +66,107 @@ namespace FormsAuthFFClient.Controllers
 
         }
 
-        private List<Claim> GetClaims()
+        [AllowAnonymous]
+        public ActionResult LoginArea1(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            if (!User.Identity.IsAuthenticated)
+                ViewBag.Message = "You Dont have enough Permissions, you need to be with elevated privileges to go there";
+            return View();
+        }
+
+        // POST: /Account/LoginArea1
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoginArea1(LoginViewModel model, string returnUrl)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (true) //Check the database
+                {
+
+
+
+                    List<Claim> claims = GetClaims("Area1"); //Get the claims from the headers or db or your user store
+                    if (null != claims)
+                    {
+                        SignIn(claims);
+                        return Redirect(returnUrl);
+                    }
+
+
+
+                    ModelState.AddModelError("", "Invalid username or password.");
+
+                }
+                else
+                {
+                    //No User of that email address
+                    ModelState.AddModelError("", "Invalid username or password.");
+                }
+            }
+            else
+            {
+                //Model not valid
+                ModelState.AddModelError("", "The Model is Not valid");
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+
+        }
+
+        [AllowAnonymous]
+        public ActionResult LoginArea2(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            if (!User.Identity.IsAuthenticated)
+                ViewBag.Message = "You Dont have enough Permissions, you need to be with elevated privileges to go there";
+            return View();
+        }
+
+        // POST: /Account/LoginArea1
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoginArea2(LoginViewModel model, string returnUrl)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (true) //Check the database
+                {
+                    List<Claim> claims = GetClaims("Area2"); //Get the claims from the headers or db or your user store
+                    if (null != claims)
+                    {
+                        SignIn(claims);
+                        return Redirect(returnUrl);
+                    }                
+
+                    ModelState.AddModelError("", "Invalid username or password.");
+
+                }
+                else
+                {
+                    //No User of that email address
+                    ModelState.AddModelError("", "Invalid username or password.");
+                }
+            }
+            else
+            {
+                //Model not valid
+                ModelState.AddModelError("", "The Model is Not valid");
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+
+        }
+
+        private List<Claim> GetClaims(string areaName)
         {
             var claims = new List<Claim>();
+            claims.Add(new Claim("Area", areaName));
             claims.Add(new Claim(DemoIdentity.IdClaimType, "12345"));
             claims.Add(new Claim(ClaimTypes.Sid, "6789"));
             claims.Add(new Claim(ClaimTypes.Name, "Adam"));
@@ -112,18 +210,6 @@ namespace FormsAuthFFClient.Controllers
             get
             {
                 return HttpContext.GetOwinContext().Authentication;
-            }
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
             }
         }
 

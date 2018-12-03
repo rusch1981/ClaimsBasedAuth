@@ -191,8 +191,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Area1\Area1AreaRegistration.cs" />
+    <Compile Include="Areas\Area1\Controllers\Area1Controller.cs" />
+    <Compile Include="Areas\Area2\Area2AreaRegistration.cs" />
+    <Compile Include="Areas\Area2\Controllers\Area2Controller.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\CustomAuthAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -216,6 +221,10 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\Area1\Views\web.config" />
+    <Content Include="Areas\Area2\Views\web.config" />
+    <Content Include="Areas\Area1\Views\Area1\Index.cshtml" />
+    <Content Include="Areas\Area2\Views\Area2\Index.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -241,9 +250,16 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\Contacts.cshtml" />
+    <Content Include="Views\Home\Redirect.cshtml" />
+    <Content Include="Views\Account\LoginArea1.cshtml" />
+    <Content Include="Views\Account\LoginArea2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Area1\Models\" />
+    <Folder Include="Areas\Area1\Views\Shared\" />
+    <Folder Include="Areas\Area2\Models\" />
+    <Folder Include="Areas\Area2\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
