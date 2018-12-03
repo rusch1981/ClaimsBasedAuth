@@ -16,40 +16,43 @@ namespace FormsAuthFFClient
         public void Configuration(IAppBuilder app)
         {
             System.Web.Helpers.AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Sid;
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                CookieSecure = CookieSecureOption.SameAsRequest
-            });
+
+            app.Use(typeof(CustomMiddleware1), app);
+
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions
+            //{
+            //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+            //    LoginPath = new PathString("/Account/Login"),
+            //    CookieSecure = CookieSecureOption.SameAsRequest
+            //});
         }
     }
 
-    public class CustomMiddleware1
+    public class CustomMiddleware1 : OwinMiddleware
     {
-        Func<IDictionary<string, object>, Task> _next;
         private readonly IAppBuilder _appBuilder;
 
-        public CustomMiddleware1(Func<IDictionary<string, object>, Task> next, IAppBuilder appBuilder)
+        public CustomMiddleware1(OwinMiddleware next, IAppBuilder appBuilder) : base(next)
         {
-            _next = next;
             _appBuilder = appBuilder;
         }
 
-        public async Task Invoke(IDictionary<string, object> environment)
+        public async override Task Invoke(IOwinContext context)
         {
-            //No solution in place. Not really sure what to do....  
-            //https://visualstudiomagazine.com/articles/2015/05/01/inject-custom-middleware.aspx
-            new CookieAuthenticationMiddleware(, _appBuilder, new CookieAuthenticationOptions
+            if(context.Request.Uri.ToString().Contains("49820"))
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                CookieSecure = CookieSecureOption.SameAsRequest
-            });
-            //pre
-            await _next.Invoke(environment);
-            //post
+                var authMiddleware1 = new CookieAuthenticationMiddleware(Next, _appBuilder, new CookieAuthenticationOptions
+                {
+                    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                    LoginPath = new PathString("/Account/Login"),
+                    CookieSecure = CookieSecureOption.SameAsRequest
+                });
+
+                context.Response.Write("<h1>PreCustomMiddleware1</h1>");
+                await authMiddleware1.Invoke(context);
+                context.Response.Write("<h1>PostCustomMiddleware1</h1>");
+            }
+            
         }
     }
 }
-
